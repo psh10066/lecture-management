@@ -36,4 +36,8 @@ public class Curriculum extends AuditingFields {
     public static Curriculum createCurriculum(String curriculumName, Lecturer lecturer) {
         return new Curriculum(curriculumName, lecturer);
     }
+
+    public void updateCurriculum(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
 }

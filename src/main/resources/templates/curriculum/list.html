@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>강의 목록</title>
+  <title>커리큘럼 목록</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
 </head>
 <body>
@@ -19,45 +19,45 @@
     </ul>
   </nav>
   <hgroup>
-    <h1>보유 강의 목록</h1>
-    <p>등록된 강의 목록을 확인할 수 있습니다.</p>
+    <h1>커리큘럼 목록</h1>
+    <p>등록된 커리큘럼 목록을 확인할 수 있습니다.</p>
   </hgroup>
 </header>
 <main class="container">
-  <form th:action="@{/study}" method="get" th:object="${request}" >
+  <form th:action="@{/curriculum}" method="get" th:object="${request}" >
     <fieldset role="group">
       <select name="lectureId" aria-label="강의">
         <option value="">강의</option>
         <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
       </select>
       <input type="text" name="lecturerName" th:value="*{lecturerName}" placeholder="강사명">
-      <input type="text" name="studyName" th:value="*{studyName}" placeholder="학습명">
+      <input type="text" name="curriculumName" th:value="*{curriculumName}" placeholder="커리큘럼명">
     <input type="submit" value="검색">
     </fieldset>
   </form>
   <section id="tables">
-    <h2>강의 목록</h2>
+    <h2>커리큘럼 목록</h2>
     <div>
       <table class="striped">
         <thead>
         <tr>
           <th scope="col">#</th>
           <th scope="col">강의명</th>
-          <th scope="col">섹션</th>
-          <th scope="col">학습명</th>
+          <th scope="col">커리큘럼명</th>
           <th style="min-width: 100px" scope="col">강사명</th>
+          <th style="min-width: 100px" scope="col"></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="study : ${studies}">
-          <th scope="row" th:text="${studyStat.index + 1}"></th>
-          <td th:if="${#strings.isEmpty(study.lecturePath)}" th:text="${study.lectureName}"></td>
-          <td th:unless="${#strings.isEmpty(study.lecturePath)}">
-            <a th:href="${study.lecturePath}" th:text="${study.lectureName}"></a>
+        <tr th:each="curriculum : ${curriculums}">
+          <th scope="row" th:text="${curriculumStat.index + 1}"></th>
+          <td th:if="${#strings.isEmpty(curriculum.lecturePath)}" th:text="${curriculum.lectureName}"></td>
+          <td th:unless="${#strings.isEmpty(curriculum.lecturePath)}">
+            <a th:href="${curriculum.lecturePath}" th:text="${curriculum.lectureName}"></a>
           </td>
-          <td th:text="${study.sectionName}"></td>
-          <td th:text="${study.studyName}"></td>
-          <td th:text="${study.lecturerName} ? ${study.lecturerName} : '-'"></td>
+          <td th:text="${curriculum.curriculumName}"></td>
+          <td th:text="${curriculum.lecturerName} ? ${curriculum.lecturerName} : '-'"></td>
+          <td><a th:href="'/curriculum/' + ${curriculum.curriculumId} + '/modify'">수정</a></td>
         </tr>
         </tbody>
       </table>
