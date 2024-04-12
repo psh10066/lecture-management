@@ -25,7 +25,7 @@ public class Curriculum extends AuditingFields {
 
     @Comment("강사 고유번호")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lecturer_id", nullable = false)
+    @JoinColumn(name = "lecturer_id")
     private Lecturer lecturer;
 
     private Curriculum(String curriculumName, Lecturer lecturer) {

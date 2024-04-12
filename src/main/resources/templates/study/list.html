@@ -7,6 +7,15 @@
 </head>
 <body>
 <header class="container">
+  <nav>
+    <ul>
+      <li><strong>나의 강의 관리</strong></li>
+    </ul>
+    <ul>
+      <li><a href="/study">강의 목록</a></li>
+      <li><a href="/lecture/register">강의 등록</a></li>
+    </ul>
+  </nav>
   <hgroup>
     <h1>보유 강의 목록</h1>
     <p>등록된 강의 목록을 확인할 수 있습니다.</p>
@@ -46,7 +55,7 @@
           </td>
           <td th:text="${study.sectionName}"></td>
           <td th:text="${study.studyName}"></td>
-          <td th:text="${study.lecturerName}"></td>
+          <td th:text="${study.lecturerName} ? ${study.lecturerName} : '-'"></td>
         </tr>
         </tbody>
       </table>

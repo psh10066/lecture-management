@@ -32,7 +32,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .from(lecture)
             .join(lectureToCurriculum).on(lecture.lectureId.eq(lectureToCurriculum.lecture.lectureId))
             .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
-            .join(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
+            .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
             .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(

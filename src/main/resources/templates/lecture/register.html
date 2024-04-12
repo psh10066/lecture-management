@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>강의 등록</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+</head>
+<body>
+<header class="container">
+  <nav>
+    <ul>
+      <li><strong>나의 강의 관리</strong></li>
+    </ul>
+    <ul>
+      <li><a href="/study">강의 목록</a></li>
+      <li><a href="/lecture/register">강의 등록</a></li>
+    </ul>
+  </nav>
+  <hgroup>
+    <h1>강의 등록</h1>
+    <p>강의를 등록할 수 있습니다.</p>
+  </hgroup>
+</header>
+<main class="container">
+  <form th:action="@{/lecture/register}" method="post" th:object="${request}">
+    <div th:if="${#fields.hasGlobalErrors()}">
+      <p th:each="err : ${#fields.globalErrors()}"
+         th:text="${err}">글로벌 오류 메시지</p>
+    </div>
+    <label>
+      강의명
+      <input type="text" th:field="*{lectureName}" placeholder="강의명" th:aria-invalid="${#fields.hasErrors('lectureName')} ? 'true' : ''">
+      <small th:errors="*{lectureName}">강의명 오류</small>
+    </label>
+    <label>
+      강의 목록
+      <textarea style="min-height: 500px" th:field="*{lectureInfo}" placeholder="강의 목록" th:aria-invalid="${#fields.hasErrors('lectureInfo')} ? 'true' : ''"></textarea>
+      <small th:errors="*{lectureInfo}">강의 목록 오류</small>
+    </label>
+    <input type="submit" value="강의 등록">
+  </form>
+</main>
+<footer class="container">
+  <small>Built with <a href="https://picocss.com">Pico</a></small>
+</footer>
+</body>
+</html>
