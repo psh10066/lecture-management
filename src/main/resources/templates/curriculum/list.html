@@ -53,7 +53,7 @@
           <th scope="row" th:text="${curriculumStat.index + 1}"></th>
           <td th:if="${#strings.isEmpty(curriculum.lecturePath)}" th:text="${curriculum.lectureName}"></td>
           <td th:unless="${#strings.isEmpty(curriculum.lecturePath)}">
-            <a th:href="${curriculum.lecturePath}" th:text="${curriculum.lectureName}"></a>
+            <a th:href="${curriculum.lecturePath}" th:text="${curriculum.lectureName}" target="_blank"></a>
           </td>
           <td th:text="${curriculum.curriculumName}"></td>
           <td th:text="${curriculum.lecturerName} ? ${curriculum.lecturerName} : '-'"></td>

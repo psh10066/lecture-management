@@ -53,7 +53,7 @@
           <th scope="row" th:text="${studyStat.index + 1}"></th>
           <td th:if="${#strings.isEmpty(study.lecturePath)}" th:text="${study.lectureName}"></td>
           <td th:unless="${#strings.isEmpty(study.lecturePath)}">
-            <a th:href="${study.lecturePath}" th:text="${study.lectureName}"></a>
+            <a th:href="${study.lecturePath}" th:text="${study.lectureName}" target="_blank"></a>
           </td>
           <td th:text="${study.sectionName}"></td>
           <td th:text="${study.studyName}"></td>

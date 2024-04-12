@@ -55,6 +55,7 @@ public class LectureService {
                 curriculum = curriculumRepository.save(Curriculum.createCurriculum(split[i + 1], null));
                 lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
                 i += 5;
+                section = null;
                 continue;
             } catch (Exception ignored) {
             }
@@ -64,6 +65,8 @@ public class LectureService {
                 section = sectionRepository.save(Section.createSection(s, curriculum));
                 i += 2;
                 continue;
+            } else if (section == null) {
+                section = sectionRepository.save(Section.createSection(curriculum.getCurriculumName(), curriculum));
             }
 
             // study
