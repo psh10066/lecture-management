@@ -45,7 +45,7 @@ public class LectureService {
 
         for (int i = 0; i < split.length; i++) {
             String s = split[i];
-            if (StringUtils.isBlank(s)) {
+            if (StringUtils.isBlank(s) || s.startsWith("미제출")) {
                 continue;
             }
 
