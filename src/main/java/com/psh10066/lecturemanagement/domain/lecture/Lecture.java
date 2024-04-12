@@ -25,11 +25,12 @@ public class Lecture extends AuditingFields {
     @Comment("강의 경로")
     private String lecturePath;
 
-    private Lecture(String lectureName) {
+    private Lecture(String lectureName, String lecturePath) {
         this.lectureName = lectureName;
+        this.lecturePath = lecturePath;
     }
 
-    public static Lecture createLecture(String lectureName) {
-        return new Lecture(lectureName);
+    public static Lecture createLecture(String lectureName, String lecturePath) {
+        return new Lecture(lectureName, lecturePath);
     }
 }

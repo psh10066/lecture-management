@@ -38,7 +38,7 @@ public class LectureService {
 
     @Transactional
     public void registerLecture(RegisterLectureRequest request) {
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName()));
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), request.lecturePath()));
         String[] split = request.lectureInfo().split("\r\n");
         Curriculum curriculum = null;
         Section section = null;

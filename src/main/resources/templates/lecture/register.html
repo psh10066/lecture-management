@@ -35,8 +35,13 @@
       <small th:errors="*{lectureName}">강의명 오류</small>
     </label>
     <label>
+      강의 경로
+      <input type="text" th:field="*{lecturePath}" placeholder="강의 경로" th:aria-invalid="${#fields.hasErrors('lecturePath')} ? 'true' : ''">
+      <small th:errors="*{lecturePath}">강의 경로 오류</small>
+    </label>
+    <label>
       강의 목록
-      <textarea style="min-height: 500px" th:field="*{lectureInfo}" placeholder="강의 목록" th:aria-invalid="${#fields.hasErrors('lectureInfo')} ? 'true' : ''"></textarea>
+      <textarea style="min-height: 400px" th:field="*{lectureInfo}" placeholder="강의 목록" th:aria-invalid="${#fields.hasErrors('lectureInfo')} ? 'true' : ''"></textarea>
       <small th:errors="*{lectureInfo}">강의 목록 오류</small>
     </label>
     <input type="submit" value="강의 등록">

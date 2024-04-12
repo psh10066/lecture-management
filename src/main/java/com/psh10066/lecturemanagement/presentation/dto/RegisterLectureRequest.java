@@ -6,10 +6,12 @@ public record RegisterLectureRequest(
     @NotBlank
     String lectureName,
 
+    String lecturePath,
+
     @NotBlank
     String lectureInfo
 ) {
     public static RegisterLectureRequest noArgs() {
-        return new RegisterLectureRequest(null, null);
+        return new RegisterLectureRequest(null, null, null);
     }
 }
