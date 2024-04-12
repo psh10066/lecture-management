@@ -16,7 +16,7 @@ public class LecturerService {
     private final LecturerRepository lecturerRepository;
 
     public List<LecturerListDTO> lecturerList() {
-        return lecturerRepository.findAll().stream()
+        return lecturerRepository.findAllByOrderByLecturerNameAsc().stream()
             .map(LecturerListDTO::from)
             .toList();
     }
