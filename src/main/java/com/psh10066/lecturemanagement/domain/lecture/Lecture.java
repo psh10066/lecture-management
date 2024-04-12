@@ -22,6 +22,9 @@ public class Lecture extends AuditingFields {
     @Column(nullable = false)
     private String lectureName;
 
+    @Comment("강의 경로")
+    private String lecturePath;
+
     private Lecture(String lectureName) {
         this.lectureName = lectureName;
     }
