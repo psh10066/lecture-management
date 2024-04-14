@@ -1,29 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
 <head>
-  <meta charset="UTF-8">
   <title>커리큘럼 수정</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
 </head>
 <body>
-<header class="container">
-  <nav>
-    <ul>
-      <li><strong>나의 강의 관리</strong></li>
-    </ul>
-    <ul>
-      <li><a href="/study">강의 목록</a></li>
-      <li><a href="/lecture/register">강의 등록</a></li>
-      <li><a href="/curriculum">커리큘럼 목록</a></li>
-      <li><a href="/lecturer/register">강사 등록</a></li>
-    </ul>
-  </nav>
-  <hgroup>
-    <h1>커리큘럼 수정</h1>
-    <p>커리큘럼을 수정할 수 있습니다.</p>
-  </hgroup>
-</header>
-<main class="container">
+<h1 layout:fragment="title">커리큘럼 수정</h1>
+<p layout:fragment="subtitle">커리큘럼을 수정할 수 있습니다.</p>
+<main layout:fragment="content">
   <div th:text="'강의명 : ' + ${curriculum.lectureName}"></div>
   <div th:text="'커리큘럼명 : ' + ${curriculum.curriculumName}"></div>
   <form th:action="'/curriculum/' + ${curriculum.curriculumId} + '/modify'" method="post">
@@ -34,8 +18,5 @@
     <input type="submit" value="커리큘럼 수정">
   </form>
 </main>
-<footer class="container">
-  <small>Built with <a href="https://picocss.com">Pico</a></small>
-</footer>
 </body>
 </html>
