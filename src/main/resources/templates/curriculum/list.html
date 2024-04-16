@@ -8,19 +8,20 @@
 <h1 layout:fragment="title">커리큘럼 목록</h1>
 <p layout:fragment="subtitle">등록된 커리큘럼 목록을 확인할 수 있습니다.</p>
 <main layout:fragment="content">
-  <form th:action="@{/curriculum}" method="get" th:object="${request}" >
+  <form th:action="@{/curriculum}" method="get" th:object="${request}">
     <fieldset role="group">
       <select name="lectureId" aria-label="강의">
         <option value="">강의</option>
-        <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
+        <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}"
+                th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
       </select>
       <input type="text" name="lecturerName" th:value="*{lecturerName}" placeholder="강사명">
       <input type="text" name="curriculumName" th:value="*{curriculumName}" placeholder="커리큘럼명">
-    <input type="submit" value="검색">
+      <input type="submit" value="검색">
     </fieldset>
   </form>
   <section id="tables">
-    <h2>커리큘럼 목록</h2>
+    <h2 th:text="'커리큘럼 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
     <div>
       <table class="striped">
         <thead>
@@ -34,7 +35,7 @@
         </thead>
         <tbody>
         <tr th:each="curriculum : ${curriculums}">
-          <th scope="row" th:text="${curriculumStat.index + 1}"></th>
+          <th scope="row" th:text="${paging.rowStartNumber} - ${curriculumStat.index}"></th>
           <td th:if="${#strings.isEmpty(curriculum.lecturePath)}" th:text="${curriculum.lectureName}"></td>
           <td th:unless="${#strings.isEmpty(curriculum.lecturePath)}">
             <a th:href="${curriculum.lecturePath}" th:text="${curriculum.lectureName}" target="_blank"></a>
@@ -45,6 +46,22 @@
         </tr>
         </tbody>
       </table>
+      <div class="grid">
+        <div></div>
+        <div class="grid">
+          <a th:if="${paging.pageNumber} != ${paging.pagingStartNumber}" th:href="${paging.pagingURI} + ${paging.pageNumber - 1}">&lt;</a>
+          <span th:unless="${paging.pageNumber} != ${paging.pagingStartNumber}">&lt;</span>
+
+          <th:block th:each="number : ${#numbers.sequence(paging.pagingStartNumber, paging.pagingEndNumber)}">
+            <a th:if="${paging.pageNumber} != ${number}" th:text="${number}" th:href="${paging.pagingURI} + ${number}"></a>
+            <b th:unless="${paging.pageNumber} != ${number}" th:text="${number}"></b>
+          </th:block>
+
+          <a th:if="${paging.pageNumber} != ${paging.pagingEndNumber}" th:href="${paging.pagingURI} + ${paging.pageNumber + 1}">&gt;</a>
+          <span th:unless="${paging.pageNumber} != ${paging.pagingEndNumber}">&gt;</span>
+        </div>
+        <div></div>
+      </div>
     </div>
   </section>
 </main>

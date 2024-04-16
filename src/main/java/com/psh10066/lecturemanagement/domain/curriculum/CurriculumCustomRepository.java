@@ -2,12 +2,12 @@ package com.psh10066.lecturemanagement.domain.curriculum;
 
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumInfoDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumListDTO;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CurriculumCustomRepository {
 
-    List<CurriculumListDTO> findAllCurriculum(Long lectureId, String lecturerName, String curriculumName);
+    Page<CurriculumListDTO> findAllCurriculum(Pageable pageable, Long lectureId, String lecturerName, String curriculumName);
 
     CurriculumInfoDTO findCurriculum(Long curriculumId);
 

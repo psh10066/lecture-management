@@ -8,10 +8,10 @@ import com.psh10066.lecturemanagement.presentation.dto.CurriculumListDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumsRequest;
 import com.psh10066.lecturemanagement.presentation.dto.ModifyCurriculumRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +20,8 @@ public class CurriculumService {
     private final LecturerRepository lecturerRepository;
     private final CurriculumRepository curriculumRepository;
 
-    public List<CurriculumListDTO> curriculumList(CurriculumsRequest request) {
-        return curriculumRepository.findAllCurriculum(request.lectureId(), request.lecturerName(), request.curriculumName());
+    public Page<CurriculumListDTO> curriculumList(Pageable pageable, CurriculumsRequest request) {
+        return curriculumRepository.findAllCurriculum(pageable, request.lectureId(), request.lecturerName(), request.curriculumName());
     }
 
     public CurriculumInfoDTO curriculumInfo(Long curriculumId) {

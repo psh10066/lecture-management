@@ -3,9 +3,13 @@ package com.psh10066.lecturemanagement.domain.curriculum;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumInfoDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumListDTO;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
@@ -20,8 +24,8 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<CurriculumListDTO> findAllCurriculum(Long lectureId, String lecturerName, String curriculumName) {
-        return queryFactory.select(Projections.constructor(CurriculumListDTO.class,
+    public Page<CurriculumListDTO> findAllCurriculum(Pageable pageable, Long lectureId, String lecturerName, String curriculumName) {
+        List<CurriculumListDTO> fetch = queryFactory.select(Projections.constructor(CurriculumListDTO.class,
                 lecture.lectureName,
                 lecture.lecturePath,
                 lecturer.lecturerName,
@@ -37,7 +41,22 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(curriculumName) ? curriculum.curriculumName.contains(curriculumName) : null
             )
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize())
             .fetch();
+
+        JPAQuery<Long> count = queryFactory.select(lecture.count())
+            .from(lecture)
+            .join(lectureToCurriculum).on(lecture.lectureId.eq(lectureToCurriculum.lecture.lectureId))
+            .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
+            .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
+            .where(
+                lectureId != null ? lecture.lectureId.eq(lectureId) : null,
+                StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
+                StringUtils.isNotBlank(curriculumName) ? curriculum.curriculumName.contains(curriculumName) : null
+            );
+
+        return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
     }
 
     @Override
