@@ -11,6 +11,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
 @Component
 @RequiredArgsConstructor
 public class PagingMaker {
@@ -32,7 +35,8 @@ public class PagingMaker {
             if (!queryParams.isEmpty()) {
                 pagingURI = UriComponentsBuilder.newInstance()
                     .queryParams(queryParams)
-                    .toUriString() + "&";
+                    .toUriString();
+                pagingURI = URLDecoder.decode(pagingURI, StandardCharsets.UTF_8) + "&";
             }
         }
         pagingURI += pageParam + "=";
