@@ -1,17 +1,18 @@
 package com.psh10066.lecturemanagement.presentation;
 
 import com.psh10066.lecturemanagement.application.LectureService;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterLectureRequest;
+import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
+import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -21,26 +22,33 @@ public class LectureController {
 
     private final LectureService lectureService;
 
-    @GetMapping("/register")
-    public String register(Model model) {
-        model.addAttribute("request", RegisterLectureRequest.noArgs());
-        return "lecture/register";
+    private <T> ModelAndView registerForm(LecturePlatform lecturePlatform, T request) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("request", request);
+        modelAndView.addObject("lecturePlatform", lecturePlatform);
+        modelAndView.setViewName("lecture/register");
+        return modelAndView;
     }
 
-    @PostMapping("/register")
-    public String register(Model model, @Validated @ModelAttribute("request") RegisterLectureRequest request, BindingResult bindingResult) {
+    @GetMapping("/register/fastcampus")
+    public ModelAndView registerFastcampus() {
+        return this.registerForm(LecturePlatform.FASTCAMPUS, RegisterFastcampusLectureRequest.noArgs());
+    }
+
+    @PostMapping("/register/fastcampus")
+    public ModelAndView registerFastcampus(@Validated @ModelAttribute("request") RegisterFastcampusLectureRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("request", request);
-            return "lecture/register";
+            return this.registerForm(LecturePlatform.FASTCAMPUS, request);
         }
         try {
-            lectureService.registerLecture(request);
+            lectureService.registerFastcampusLecture(request);
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
-            model.addAttribute("request", request);
-            return "lecture/register";
+            return this.registerForm(LecturePlatform.FASTCAMPUS, request);
         }
-        return "redirect:/study";
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/study");
+        return modelAndView;
     }
 }

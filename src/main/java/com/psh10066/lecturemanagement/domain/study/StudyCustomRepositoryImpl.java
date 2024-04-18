@@ -24,6 +24,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
     public List<StudyListDTO> findAllStudy(Long lectureId, String lecturerName, String studyName) {
         return queryFactory.select(Projections.constructor(StudyListDTO.class,
                 lecture.lectureName,
+                lecture.lecturePlatform,
                 lecture.lecturePath,
                 lecturer.lecturerName,
                 section.sectionName,

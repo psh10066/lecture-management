@@ -4,6 +4,7 @@ import com.psh10066.lecturemanagement.domain.curriculum.Curriculum;
 import com.psh10066.lecturemanagement.domain.curriculum.CurriculumRepository;
 import com.psh10066.lecturemanagement.domain.lecture.Lecture;
 import com.psh10066.lecturemanagement.domain.lecture.LectureRepository;
+import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculum;
 import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculumRepository;
 import com.psh10066.lecturemanagement.domain.section.Section;
@@ -12,7 +13,7 @@ import com.psh10066.lecturemanagement.domain.study.Study;
 import com.psh10066.lecturemanagement.domain.study.StudyRepository;
 import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
 import com.psh10066.lecturemanagement.presentation.dto.LectureSelectDTO;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterLectureRequest;
+import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,8 +38,8 @@ public class LectureService {
     }
 
     @Transactional
-    public void registerLecture(RegisterLectureRequest request) {
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), request.lecturePath()));
+    public void registerFastcampusLecture(RegisterFastcampusLectureRequest request) {
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath()));
         String[] split = request.lectureInfo().split("\r\n");
         Curriculum curriculum = null;
         Section section = null;

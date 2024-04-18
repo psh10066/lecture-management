@@ -26,6 +26,7 @@
         <thead>
         <tr>
           <th scope="col">#</th>
+          <th style="min-width: 160px" scope="col">플랫폼</th>
           <th scope="col">강의명</th>
           <th scope="col">섹션</th>
           <th scope="col">학습명</th>
@@ -35,6 +36,7 @@
         <tbody>
         <tr th:each="study : ${studies}">
           <th scope="row" th:text="${studyStat.index + 1}"></th>
+          <td th:text="${study.lecturePlatform.name}"></td>
           <td th:if="${#strings.isEmpty(study.lecturePath)}" th:text="${study.lectureName}"></td>
           <td th:unless="${#strings.isEmpty(study.lecturePath)}">
             <a th:href="${study.lecturePath}" th:text="${study.lectureName}" target="_blank"></a>
