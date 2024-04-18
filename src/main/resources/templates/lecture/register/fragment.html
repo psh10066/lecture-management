@@ -19,5 +19,14 @@
   </label>
   <input type="submit" value="강의 등록">
 </div>
+
+<div th:fragment="inflearn">
+  <label>
+    강의 경로
+    <input type="text" th:field="*{lecturePath}" placeholder="강의 경로" th:aria-invalid="${#fields.hasErrors('lecturePath')} ? 'true' : ''">
+    <small th:errors="*{lecturePath}">강의 경로 오류</small>
+  </label>
+  <input type="submit" value="강의 등록">
+</div>
 </body>
 </html>

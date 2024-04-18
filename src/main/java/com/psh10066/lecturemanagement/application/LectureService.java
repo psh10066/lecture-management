@@ -5,6 +5,8 @@ import com.psh10066.lecturemanagement.domain.curriculum.CurriculumRepository;
 import com.psh10066.lecturemanagement.domain.lecture.Lecture;
 import com.psh10066.lecturemanagement.domain.lecture.LectureRepository;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
+import com.psh10066.lecturemanagement.domain.lecturer.Lecturer;
+import com.psh10066.lecturemanagement.domain.lecturer.LecturerRepository;
 import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculum;
 import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculumRepository;
 import com.psh10066.lecturemanagement.domain.section.Section;
@@ -14,11 +16,19 @@ import com.psh10066.lecturemanagement.domain.study.StudyRepository;
 import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
 import com.psh10066.lecturemanagement.presentation.dto.LectureSelectDTO;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
+import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Service
@@ -30,6 +40,7 @@ public class LectureService {
     private final LectureToCurriculumRepository lectureToCurriculumRepository;
     private final SectionRepository sectionRepository;
     private final StudyRepository studyRepository;
+    private final LecturerRepository lecturerRepository;
 
     public List<LectureSelectDTO> lectureList() {
         return lectureRepository.findAll().stream()
@@ -73,6 +84,49 @@ public class LectureService {
             // study
             studyRepository.save(Study.createStudy(s, DateTimeUtil.parseTime(split[i + 1]), section));
             i++;
+        }
+    }
+
+    @Transactional
+    public void registerInflearnLecture(RegisterInflearnLectureRequest request) {
+        String prefix = "https://www.inflearn.com/course/";
+        if (!request.lecturePath().startsWith(prefix)) {
+            throw new RuntimeException("잘못된 강의 경로입니다.");
+        }
+
+        String lecturePath = URLDecoder.decode(prefix + request.lecturePath().substring(prefix.length()).split("/")[0].split("\\?")[0].split("#")[0], StandardCharsets.UTF_8);
+        Document baseDoc;
+        try {
+            baseDoc = Jsoup.connect(lecturePath).get();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Elements sections = baseDoc.getElementsByClass("cd-accordion__section-cover");
+        if (sections.isEmpty()) {
+            throw new RuntimeException("잘못된 강의 경로입니다.");
+        }
+
+        String lectureName = baseDoc.getElementsByClass("cd-header__title").getFirst().ownText();
+        String lecturerName = baseDoc.getElementsByClass("cd-header__instructors--main").getFirst().text();
+
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard"));
+        Lecturer lecturer = lecturerRepository.findByLecturerName(lecturerName)
+            .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName)));
+        Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer));
+        lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
+
+        for (Element sectionElement : sections) {
+            String sectionName = sectionElement.getElementsByClass("cd-accordion__section-title").getFirst().text();
+            Section section = sectionRepository.save(Section.createSection(sectionName, curriculum));
+
+            Elements studies = sectionElement.getElementsByClass("cd-accordion__unit");
+            for (Element studyElement : studies) {
+                String studyName = studyElement.getElementsByClass("ac-accordion__unit-title").getFirst().text();
+                Element studyTimeElement = studyElement.getElementsByClass("ac-accordion__unit-info--time").first();
+                String studyTime = studyTimeElement != null ? studyTimeElement.text() : null;
+                studyRepository.save(Study.createStudy(studyName, DateTimeUtil.parseTime(studyTime), section));
+            }
         }
     }
 }

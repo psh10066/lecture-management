@@ -26,7 +26,6 @@ public class Study extends AuditingFields {
     private String studyName;
 
     @Comment("학습 시간")
-    @Column(nullable = false)
     private LocalTime studyTime;
 
     @Comment("섹션 고유번호")

@@ -3,6 +3,7 @@ package com.psh10066.lecturemanagement.presentation;
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
+import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,6 +26,7 @@ public class LectureController {
     private <T> ModelAndView registerForm(LecturePlatform lecturePlatform, T request) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("request", request);
+        modelAndView.addObject("lecturePlatforms", LecturePlatform.values());
         modelAndView.addObject("lecturePlatform", lecturePlatform);
         modelAndView.setViewName("lecture/register");
         return modelAndView;
@@ -46,6 +48,28 @@ public class LectureController {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
             return this.registerForm(LecturePlatform.FASTCAMPUS, request);
+        }
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("redirect:/study");
+        return modelAndView;
+    }
+
+    @GetMapping("/register/inflearn")
+    public ModelAndView registerInflearn() {
+        return this.registerForm(LecturePlatform.INFLEARN, RegisterFastcampusLectureRequest.noArgs());
+    }
+
+    @PostMapping("/register/inflearn")
+    public ModelAndView registerInflearn(@Validated @ModelAttribute("request") RegisterInflearnLectureRequest request, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return this.registerForm(LecturePlatform.INFLEARN, request);
+        }
+        try {
+            lectureService.registerInflearnLecture(request);
+        } catch (Exception e) {
+            log.error("강의 등록 실패", e);
+            bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
+            return this.registerForm(LecturePlatform.INFLEARN, request);
         }
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/study");
