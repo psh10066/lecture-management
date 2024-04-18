@@ -8,19 +8,20 @@
 <h1 layout:fragment="title">보유 강의 목록</h1>
 <p layout:fragment="subtitle">등록된 강의 목록을 확인할 수 있습니다.</p>
 <main layout:fragment="content">
-  <form th:action="@{/study}" method="get" th:object="${request}" >
+  <form th:action="@{/study}" method="get" th:object="${request}">
     <fieldset role="group">
       <select name="lectureId" aria-label="강의">
         <option value="">강의</option>
-        <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}" th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
+        <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}"
+                th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
       </select>
       <input type="text" name="lecturerName" th:value="*{lecturerName}" placeholder="강사명">
       <input type="text" name="studyName" th:value="*{studyName}" placeholder="학습명">
-    <input type="submit" value="검색">
+      <input type="submit" value="검색">
     </fieldset>
   </form>
   <section id="tables">
-    <h2>강의 목록</h2>
+    <h2 th:text="'강의 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
     <div>
       <table class="striped">
         <thead>
@@ -35,7 +36,7 @@
         </thead>
         <tbody>
         <tr th:each="study : ${studies}">
-          <th scope="row" th:text="${studyStat.index + 1}"></th>
+          <th scope="row" th:text="${paging.rowStartNumber} - ${studyStat.index}"></th>
           <td th:text="${study.lecturePlatform.name}"></td>
           <td th:if="${#strings.isEmpty(study.lecturePath)}" th:text="${study.lectureName}"></td>
           <td th:unless="${#strings.isEmpty(study.lecturePath)}">
@@ -47,6 +48,7 @@
         </tr>
         </tbody>
       </table>
+      <div th:replace="~{common/fragment::paging}"></div>
     </div>
   </section>
 </main>

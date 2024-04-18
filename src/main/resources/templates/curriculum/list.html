@@ -46,22 +46,7 @@
         </tr>
         </tbody>
       </table>
-      <div class="grid">
-        <div></div>
-        <div class="grid">
-          <a th:if="${paging.pageNumber} != ${paging.pagingStartNumber}" th:href="${paging.pagingURI} + ${paging.pageNumber - 1}">&lt;</a>
-          <span th:unless="${paging.pageNumber} != ${paging.pagingStartNumber}">&lt;</span>
-
-          <th:block th:each="number : ${#numbers.sequence(paging.pagingStartNumber, paging.pagingEndNumber)}">
-            <a th:if="${paging.pageNumber} != ${number}" th:text="${number}" th:href="${paging.pagingURI} + ${number}"></a>
-            <b th:unless="${paging.pageNumber} != ${number}" th:text="${number}"></b>
-          </th:block>
-
-          <a th:if="${paging.pageNumber} != ${paging.pagingEndNumber}" th:href="${paging.pagingURI} + ${paging.pageNumber + 1}">&gt;</a>
-          <span th:unless="${paging.pageNumber} != ${paging.pagingEndNumber}">&gt;</span>
-        </div>
-        <div></div>
-      </div>
+      <div th:replace="~{common/fragment::paging}"></div>
     </div>
   </section>
 </main>
