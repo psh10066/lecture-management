@@ -22,10 +22,14 @@
   </nav>
   <form th:action="'/lecture/register/' + ${lecturePlatform.path}" method="post" th:object="${request}">
     <div th:if="${#fields.hasGlobalErrors()}">
-      <p th:each="err : ${#fields.globalErrors()}"
-         th:text="${err}">글로벌 오류 메시지</p>
+      <mark th:each="err : ${#fields.globalErrors()}"
+            th:text="${err}">글로벌 오류 메시지
+      </mark>
     </div>
+    <hr>
     <div th:replace="~{lecture/register/fragment::${lecturePlatform.path}}"></div>
+    <hr>
+    <input type="submit" value="강의 등록">
   </form>
 </main>
 </body>

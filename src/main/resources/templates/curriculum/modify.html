@@ -10,11 +10,17 @@
 <main layout:fragment="content">
   <div th:text="'강의명 : ' + ${curriculum.lectureName}"></div>
   <div th:text="'커리큘럼명 : ' + ${curriculum.curriculumName}"></div>
+  <hr>
   <form th:action="'/curriculum/' + ${curriculum.curriculumId} + '/modify'" method="post">
-    <select name="lecturerId" aria-label="강사">
-      <option value="">강사</option>
-      <option th:selected="${lecturer.lecturerId} == ${curriculum.lecturerId}" th:each="lecturer : ${lecturers}" th:value="${lecturer.lecturerId}" th:text="${lecturer.lecturerName}"></option>
-    </select>
+    <label>
+      강사명
+      <select name="lecturerId" aria-label="강사">
+        <option value="">강사</option>
+        <option th:selected="${lecturer.lecturerId} == ${curriculum.lecturerId}" th:each="lecturer : ${lecturers}"
+                th:value="${lecturer.lecturerId}" th:text="${lecturer.lecturerName}"></option>
+      </select>
+    </label>
+    <hr>
     <input type="submit" value="커리큘럼 수정">
   </form>
 </main>

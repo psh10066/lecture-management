@@ -14,6 +14,7 @@
       <input type="text" th:field="*{lecturerName}" placeholder="강사명" th:aria-invalid="${#fields.hasErrors('lecturerName')} ? 'true' : ''">
       <small th:errors="*{lecturerName}">강사명 오류</small>
     </label>
+    <hr>
     <input type="submit" value="강사 등록">
   </form>
 </main>
