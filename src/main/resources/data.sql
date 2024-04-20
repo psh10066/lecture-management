@@ -1,0 +1,1 @@
+insert into user (username, password, enabled, created_at, updated_at) values ('test', '$2a$10$NQ8LiAqoNGO7GtC9TB.LW.ASaBfMM6Z.HcvYd3s9HhS2j8v971Eie', 1, now(), now());

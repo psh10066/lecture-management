@@ -11,6 +11,9 @@ spring:
         default-page-size: 10
         one-indexed-parameters: true
         page-parameter: page
+  session:
+    jdbc:
+      initialize-schema: always
 
 logging:
   level:
@@ -41,3 +44,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true # ddl-auto 이후 schema-mysql.sql, data.sql 실행
+  sql.init.mode: always # schema.sql, data.sql 실행 여부
