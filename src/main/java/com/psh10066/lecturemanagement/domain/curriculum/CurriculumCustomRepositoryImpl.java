@@ -1,5 +1,6 @@
 package com.psh10066.lecturemanagement.domain.curriculum;
 
+import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumInfoDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumListDTO;
 import com.querydsl.core.types.Projections;
@@ -24,7 +25,7 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<CurriculumListDTO> findAllCurriculum(Pageable pageable, Long lectureId, String lecturerName, String curriculumName) {
+    public Page<CurriculumListDTO> findAllCurriculum(User user, Pageable pageable, Long lectureId, String lecturerName, String curriculumName) {
         List<CurriculumListDTO> fetch = queryFactory.select(Projections.constructor(CurriculumListDTO.class,
                 lecture.lectureName,
                 lecture.lecturePath,
@@ -37,6 +38,7 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
             .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
             .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
             .where(
+                lecture.user.eq(user),
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(curriculumName) ? curriculum.curriculumName.contains(curriculumName) : null
@@ -51,6 +53,7 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
             .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
             .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
             .where(
+                lecture.user.eq(user),
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(curriculumName) ? curriculum.curriculumName.contains(curriculumName) : null

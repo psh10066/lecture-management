@@ -2,6 +2,7 @@ package com.psh10066.lecturemanagement.domain.lecture;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
+import com.psh10066.lecturemanagement.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,13 +32,19 @@ public class Lecture extends AuditingFields {
     @Comment("강의 경로")
     private String lecturePath;
 
-    private Lecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath) {
+    @Comment("사용자 고유번호")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private Lecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, User user) {
         this.lectureName = lectureName;
         this.lecturePlatform = lecturePlatform;
         this.lecturePath = lecturePath;
+        this.user = user;
     }
 
-    public static Lecture createLecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath) {
-        return new Lecture(lectureName, lecturePlatform, lecturePath);
+    public static Lecture createLecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, User user) {
+        return new Lecture(lectureName, lecturePlatform, lecturePath, user);
     }
 }

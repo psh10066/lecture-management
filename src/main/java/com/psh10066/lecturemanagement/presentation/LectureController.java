@@ -2,10 +2,12 @@ package com.psh10066.lecturemanagement.presentation;
 
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
+import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -38,12 +40,12 @@ public class LectureController {
     }
 
     @PostMapping("/register/fastcampus")
-    public ModelAndView registerFastcampus(@Validated @ModelAttribute("request") RegisterFastcampusLectureRequest request, BindingResult bindingResult) {
+    public ModelAndView registerFastcampus(@AuthenticationPrincipal User user, @Validated @ModelAttribute("request") RegisterFastcampusLectureRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return this.registerForm(LecturePlatform.FASTCAMPUS, request);
         }
         try {
-            lectureService.registerFastcampusLecture(request);
+            lectureService.registerFastcampusLecture(user, request);
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
@@ -60,12 +62,12 @@ public class LectureController {
     }
 
     @PostMapping("/register/inflearn")
-    public ModelAndView registerInflearn(@Validated @ModelAttribute("request") RegisterInflearnLectureRequest request, BindingResult bindingResult) {
+    public ModelAndView registerInflearn(@AuthenticationPrincipal User user, @Validated @ModelAttribute("request") RegisterInflearnLectureRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return this.registerForm(LecturePlatform.INFLEARN, request);
         }
         try {
-            lectureService.registerInflearnLecture(request);
+            lectureService.registerInflearnLecture(user, request);
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");

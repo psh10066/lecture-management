@@ -1,9 +1,11 @@
 package com.psh10066.lecturemanagement.presentation;
 
 import com.psh10066.lecturemanagement.application.LecturerService;
+import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterLecturerRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,12 +30,12 @@ public class LecturerController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @Validated @ModelAttribute("request") RegisterLecturerRequest request, BindingResult bindingResult) {
+    public String register(Model model, @AuthenticationPrincipal User user, @Validated @ModelAttribute("request") RegisterLecturerRequest request, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("request", request);
             return "lecturer/register";
         }
-        lecturerService.registerLecturer(request);
+        lecturerService.registerLecturer(user, request);
         return "redirect:/study";
     }
 }

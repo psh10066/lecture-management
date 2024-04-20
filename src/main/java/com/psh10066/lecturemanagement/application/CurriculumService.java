@@ -3,6 +3,7 @@ package com.psh10066.lecturemanagement.application;
 import com.psh10066.lecturemanagement.domain.curriculum.CurriculumRepository;
 import com.psh10066.lecturemanagement.domain.lecturer.Lecturer;
 import com.psh10066.lecturemanagement.domain.lecturer.LecturerRepository;
+import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumInfoDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumListDTO;
 import com.psh10066.lecturemanagement.presentation.dto.CurriculumsRequest;
@@ -20,8 +21,8 @@ public class CurriculumService {
     private final LecturerRepository lecturerRepository;
     private final CurriculumRepository curriculumRepository;
 
-    public Page<CurriculumListDTO> curriculumList(Pageable pageable, CurriculumsRequest request) {
-        return curriculumRepository.findAllCurriculum(pageable, request.lectureId(), request.lecturerName(), request.curriculumName());
+    public Page<CurriculumListDTO> curriculumList(User user, Pageable pageable, CurriculumsRequest request) {
+        return curriculumRepository.findAllCurriculum(user, pageable, request.lectureId(), request.lecturerName(), request.curriculumName());
     }
 
     public CurriculumInfoDTO curriculumInfo(Long curriculumId) {

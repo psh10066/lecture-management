@@ -13,6 +13,7 @@ import com.psh10066.lecturemanagement.domain.section.Section;
 import com.psh10066.lecturemanagement.domain.section.SectionRepository;
 import com.psh10066.lecturemanagement.domain.study.Study;
 import com.psh10066.lecturemanagement.domain.study.StudyRepository;
+import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
 import com.psh10066.lecturemanagement.presentation.dto.LectureSelectDTO;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
@@ -42,15 +43,15 @@ public class LectureService {
     private final StudyRepository studyRepository;
     private final LecturerRepository lecturerRepository;
 
-    public List<LectureSelectDTO> lectureList() {
-        return lectureRepository.findAll().stream()
+    public List<LectureSelectDTO> lectureList(User user) {
+        return lectureRepository.findAllByUser(user).stream()
             .map(LectureSelectDTO::from)
             .toList();
     }
 
     @Transactional
-    public void registerFastcampusLecture(RegisterFastcampusLectureRequest request) {
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath()));
+    public void registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request) {
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath(), user));
         String[] split = request.lectureInfo().split("\r\n");
         Curriculum curriculum = null;
         Section section = null;
@@ -88,7 +89,7 @@ public class LectureService {
     }
 
     @Transactional
-    public void registerInflearnLecture(RegisterInflearnLectureRequest request) {
+    public void registerInflearnLecture(User user, RegisterInflearnLectureRequest request) {
         String prefix = "https://www.inflearn.com/course/";
         if (!request.lecturePath().startsWith(prefix)) {
             throw new RuntimeException("잘못된 강의 경로입니다.");
@@ -110,9 +111,9 @@ public class LectureService {
         String lectureName = baseDoc.getElementsByClass("cd-header__title").getFirst().ownText();
         String lecturerName = baseDoc.getElementsByClass("cd-header__instructors--main").getFirst().text();
 
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard"));
-        Lecturer lecturer = lecturerRepository.findByLecturerName(lecturerName)
-            .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName)));
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user));
+        Lecturer lecturer = lecturerRepository.findByLecturerNameAndUser(lecturerName, user)
+            .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName, user)));
         Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer));
         lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
 

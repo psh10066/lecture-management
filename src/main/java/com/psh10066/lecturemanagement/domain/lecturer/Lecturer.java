@@ -1,6 +1,7 @@
 package com.psh10066.lecturemanagement.domain.lecturer;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
+import com.psh10066.lecturemanagement.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,11 +23,17 @@ public class Lecturer extends AuditingFields {
     @Column(nullable = false)
     private String lecturerName;
 
-    private Lecturer(String lecturerName) {
+    @Comment("사용자 고유번호")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    private Lecturer(String lecturerName, User user) {
         this.lecturerName = lecturerName;
+        this.user = user;
     }
 
-    public static Lecturer createLecturer(String lecturerName) {
-        return new Lecturer(lecturerName);
+    public static Lecturer createLecturer(String lecturerName, User user) {
+        return new Lecturer(lecturerName, user);
     }
 }
