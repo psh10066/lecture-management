@@ -1,6 +1,7 @@
 package com.psh10066.lecturemanagement.domain.user;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
+import com.psh10066.lecturemanagement.infrastructure.converter.PasswordConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class User extends AuditingFields implements UserDetails {
 
     @Comment("사용자 비밀번호")
     @Column(nullable = false)
+    @Convert(converter = PasswordConverter.class)
     private String password;
 
     @Comment("사용자 활성화 여부")
