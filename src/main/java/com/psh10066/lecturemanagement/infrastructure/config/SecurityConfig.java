@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -45,6 +44,7 @@ public class SecurityConfig {
                 .tokenRepository(persistentTokenRepository())
             )
             .authorizeHttpRequests(config -> config
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
                 .anyRequest().hasRole("USER")
             )
@@ -59,11 +59,5 @@ public class SecurityConfig {
         jdbcTokenRepository.setDataSource(dataSource);
 //        jdbcTokenRepository.setCreateTableOnStartup(true); // persistent_logins 테이블 없는 경우 최초 생성 설정
         return jdbcTokenRepository;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 }
