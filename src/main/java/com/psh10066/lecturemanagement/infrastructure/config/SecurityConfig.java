@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .tokenRepository(persistentTokenRepository())
             )
             .authorizeHttpRequests(config -> config
+                .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
                 .anyRequest().hasRole("USER")
             )
         ;
