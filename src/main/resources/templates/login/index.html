@@ -1,23 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <title>나의 강의 관리</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
-</head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/permitLayout}">
 <body>
-<header class="container">
-  <nav>
-    <ul>
-      <li><strong>나의 강의 관리</strong></li>
-    </ul>
-  </nav>
-  <hgroup>
-    <h1>로그인</h1>
-    <p>로그인 페이지</p>
-  </hgroup>
-</header>
-<main class="container">
+<h1 layout:fragment="title">로그인</h1>
+<p layout:fragment="subtitle">로그인 페이지</p>
+<main layout:fragment="content">
   <mark th:if="${result.isError()}">아이디 또는 비밀번호가 일치하지 않습니다.</mark>
   <mark th:if="${result.isLogout()}">로그아웃 되었습니다.</mark>
   <hr>
@@ -38,8 +25,5 @@
     <input type="submit" value="로그인">
   </form>
 </main>
-<footer class="container">
-  <small>Built with <a href="https://picocss.com">Pico</a></small>
-</footer>
 </body>
 </html>

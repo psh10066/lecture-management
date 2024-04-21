@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <title>나의 강의 관리</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"/>
+</head>
+<body>
+<header class="container">
+  <nav>
+    <ul>
+      <li><strong>나의 강의 관리</strong></li>
+    </ul>
+  </nav>
+  <hgroup>
+    <h1 layout:fragment="title">제목</h1>
+    <p layout:fragment="subtitle">부제목</p>
+  </hgroup>
+</header>
+<main class="container" layout:fragment="content"></main>
+<footer class="container">
+  <small>Built with <a href="https://picocss.com">Pico</a></small>
+</footer>
+</body>
+</html>
