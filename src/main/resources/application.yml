@@ -1,5 +1,8 @@
 spring:
+  sql.init.mode: never # schema.sql, data.sql 실행 여부
   jpa:
+    hibernate.ddl-auto: none
+    defer-datasource-initialization: true # ddl-auto 이후 schema-mysql.sql, data.sql 실행
     open-in-view: false
     properties:
       hibernate:
@@ -36,13 +39,12 @@ spring:
 
 spring:
   config.activate.on-profile: test
+  sql.init.mode: always # schema.sql, data.sql 실행 여부
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/lecture-management-test
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test;NON_KEYWORDS=user
     username: root
     password: 12345678
   jpa:
     hibernate:
       ddl-auto: create
-    defer-datasource-initialization: true # ddl-auto 이후 schema-mysql.sql, data.sql 실행
-  sql.init.mode: always # schema.sql, data.sql 실행 여부
