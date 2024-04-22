@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,6 +22,7 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final Environment env;
     private final DataSource dataSource;
 
     @Bean
@@ -57,7 +59,11 @@ public class SecurityConfig {
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
         jdbcTokenRepository.setDataSource(dataSource);
-//        jdbcTokenRepository.setCreateTableOnStartup(true); // persistent_logins 테이블 없는 경우 최초 생성 설정
+        jdbcTokenRepository.setCreateTableOnStartup(isH2Profile()); // persistent_logins 테이블 없는 경우 최초 생성 설정
         return jdbcTokenRepository;
+    }
+
+    private boolean isH2Profile() {
+        return env.getActiveProfiles().length > 0 && env.getActiveProfiles()[0].equals("test");
     }
 }
