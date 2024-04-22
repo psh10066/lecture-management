@@ -147,8 +147,8 @@ public class LectureService {
             throw new RuntimeException("잘못된 강의 경로입니다.");
         }
 
-        String lectureName = baseDoc.getElementsByClass("cd-header__title").getFirst().ownText();
-        String lecturerName = baseDoc.getElementsByClass("cd-header__instructors--main").getFirst().text();
+        String lectureName = baseDoc.getElementsByClass("cd-header__title").first().ownText();
+        String lecturerName = baseDoc.getElementsByClass("cd-header__instructors--main").first().text();
 
         Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user));
         Lecturer lecturer = lecturerRepository.findByLecturerNameAndUser(lecturerName, user)
@@ -157,12 +157,12 @@ public class LectureService {
         lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
 
         for (Element sectionElement : sections) {
-            String sectionName = sectionElement.getElementsByClass("cd-accordion__section-title").getFirst().text();
+            String sectionName = sectionElement.getElementsByClass("cd-accordion__section-title").first().text();
             Section section = sectionRepository.save(Section.createSection(sectionName, curriculum));
 
             Elements studies = sectionElement.getElementsByClass("cd-accordion__unit");
             for (Element studyElement : studies) {
-                String studyName = studyElement.getElementsByClass("ac-accordion__unit-title").getFirst().text();
+                String studyName = studyElement.getElementsByClass("ac-accordion__unit-title").first().text();
                 Element studyTimeElement = studyElement.getElementsByClass("ac-accordion__unit-info--time").first();
                 String studyTime = studyTimeElement != null ? studyTimeElement.text() : null;
                 studyRepository.save(Study.createStudy(studyName, DateTimeUtil.parseTime(studyTime), section));
