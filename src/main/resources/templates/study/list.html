@@ -2,11 +2,11 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layout}">
 <head>
-  <title>강의 목록</title>
+  <title>학습 목록</title>
 </head>
 <body>
-<h1 layout:fragment="title">보유 강의 목록</h1>
-<p layout:fragment="subtitle">등록된 강의 목록을 확인할 수 있습니다.</p>
+<h1 layout:fragment="title">전체 학습 목록</h1>
+<p layout:fragment="subtitle">등록된 학습 목록을 확인할 수 있습니다.</p>
 <main layout:fragment="content">
   <form th:action="@{/study}" method="get" th:object="${request}">
     <fieldset role="group">
@@ -22,7 +22,7 @@
   </form>
   <hr>
   <section id="tables">
-    <h2 th:text="'강의 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
+    <h2 th:text="'학습 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
     <div>
       <table class="striped">
         <thead>

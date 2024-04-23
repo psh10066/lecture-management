@@ -35,7 +35,7 @@ public class SecurityConfig {
         http
             .formLogin(login -> login
                 .loginPage("/login")
-                .defaultSuccessUrl("/study", true)
+                .defaultSuccessUrl("/lecture", true)
                 .permitAll()
             )
             .logout(logout -> logout

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface LectureRepository extends JpaRepository<Lecture, Long> {
+public interface LectureRepository extends JpaRepository<Lecture, Long>, LectureCustomRepository {
 
     List<Lecture> findAllByUser(User user);
 }

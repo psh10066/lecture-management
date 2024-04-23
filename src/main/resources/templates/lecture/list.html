@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+  <title>강의 목록</title>
+</head>
+<body>
+<h1 layout:fragment="title">보유 강의 목록</h1>
+<p layout:fragment="subtitle">등록된 강의 목록을 확인할 수 있습니다.</p>
+<main layout:fragment="content">
+  <form th:action="@{/lecture}" method="get" th:object="${request}">
+    <fieldset class="grid">
+      <label>
+        강의 플랫폼
+        <select name="lecturePlatform" aria-label="강의">
+          <option value="">강의 플랫폼</option>
+          <option th:selected="${lecturePlatform} == *{lecturePlatform}" th:each="lecturePlatform : ${lecturePlatforms}"
+                  th:value="${lecturePlatform}" th:text="${lecturePlatform.name}"></option>
+        </select>
+      </label>
+      <label>
+        강의명
+        <input type="text" name="lectureName" th:value="*{lectureName}" placeholder="강의명">
+      </label>
+    </fieldset>
+    <input type="submit" value="검색">
+  </form>
+  <hr>
+  <section id="tables">
+    <h2 th:text="'강의 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
+    <div>
+      <table class="striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th style="min-width: 160px" scope="col">플랫폼</th>
+          <th scope="col">강의명</th>
+          <th scope="col">강의 경로</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lecture : ${lectures}">
+          <th scope="row" th:text="${paging.rowStartNumber} - ${lectureStat.index}"></th>
+          <td th:text="${lecture.lecturePlatform.name}"></td>
+          <td th:text="${lecture.lectureName}"></td>
+          <td th:if="${#strings.isEmpty(lecture.lecturePath)}">-</td>
+          <td th:unless="${#strings.isEmpty(lecture.lecturePath)}">
+            <a th:href="${lecture.lecturePath}" th:text="${lecture.lecturePath}" target="_blank"></a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div th:replace="~{common/fragment::paging}"></div>
+    </div>
+  </section>
+</main>
+</body>
+</html>

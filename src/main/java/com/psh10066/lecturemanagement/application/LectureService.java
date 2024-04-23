@@ -15,7 +15,8 @@ import com.psh10066.lecturemanagement.domain.study.Study;
 import com.psh10066.lecturemanagement.domain.study.StudyRepository;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.presentation.dto.LectureSelectDTO;
+import com.psh10066.lecturemanagement.presentation.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.presentation.dto.LecturesRequest;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
 import io.micrometer.common.util.StringUtils;
@@ -24,6 +25,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,10 +46,14 @@ public class LectureService {
     private final StudyRepository studyRepository;
     private final LecturerRepository lecturerRepository;
 
-    public List<LectureSelectDTO> lectureList(User user) {
+    public List<LectureListDTO> lectureList(User user) {
         return lectureRepository.findAllByUser(user).stream()
-            .map(LectureSelectDTO::from)
+            .map(LectureListDTO::from)
             .toList();
+    }
+
+    public Page<LectureListDTO> lectureList(User user, Pageable pageable, LecturesRequest request) {
+        return lectureRepository.findAllLecture(user, pageable, request.lectureName(), request.lecturePlatform());
     }
 
     @Transactional
