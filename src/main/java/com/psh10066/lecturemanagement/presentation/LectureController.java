@@ -58,7 +58,7 @@ public class LectureController {
 
     @GetMapping("/register/inflearn")
     public ModelAndView registerInflearn() {
-        return this.registerForm(LecturePlatform.INFLEARN, RegisterFastcampusLectureRequest.noArgs());
+        return this.registerForm(LecturePlatform.INFLEARN, RegisterInflearnLectureRequest.noArgs());
     }
 
     @PostMapping("/register/inflearn")
