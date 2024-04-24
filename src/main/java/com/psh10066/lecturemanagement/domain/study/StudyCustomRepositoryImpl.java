@@ -28,6 +28,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
     @Override
     public Page<StudyListDTO> findAllStudy(User user, Pageable pageable, Long lectureId, String lecturerName, String studyName) {
         List<StudyListDTO> fetch = queryFactory.select(Projections.constructor(StudyListDTO.class,
+                lecture.lectureId,
                 lecture.lectureName,
                 lecture.lecturePlatform,
                 lecture.lecturePath,

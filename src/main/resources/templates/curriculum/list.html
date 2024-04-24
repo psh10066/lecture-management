@@ -37,9 +37,8 @@
         <tbody>
         <tr th:each="curriculum : ${curriculums}">
           <th scope="row" th:text="${paging.rowStartNumber} - ${curriculumStat.index}"></th>
-          <td th:if="${#strings.isEmpty(curriculum.lecturePath)}" th:text="${curriculum.lectureName}"></td>
-          <td th:unless="${#strings.isEmpty(curriculum.lecturePath)}">
-            <a th:href="${curriculum.lecturePath}" th:text="${curriculum.lectureName}" target="_blank"></a>
+          <td>
+            <a th:href="'/lecture/' + ${curriculum.lectureId}" th:text="${curriculum.lectureName}"></a>
           </td>
           <td th:text="${curriculum.curriculumName}"></td>
           <td th:text="${curriculum.lecturerName} ? ${curriculum.lecturerName} : '-'"></td>

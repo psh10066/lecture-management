@@ -27,6 +27,7 @@ public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepositor
     @Override
     public Page<CurriculumListDTO> findAllCurriculum(User user, Pageable pageable, Long lectureId, String lecturerName, String curriculumName) {
         List<CurriculumListDTO> fetch = queryFactory.select(Projections.constructor(CurriculumListDTO.class,
+                lecture.lectureId,
                 lecture.lectureName,
                 lecture.lecturePath,
                 lecturer.lecturerName,

@@ -39,9 +39,8 @@
         <tr th:each="study : ${studies}">
           <th scope="row" th:text="${paging.rowStartNumber} - ${studyStat.index}"></th>
           <td th:text="${study.lecturePlatform.name}"></td>
-          <td th:if="${#strings.isEmpty(study.lecturePath)}" th:text="${study.lectureName}"></td>
-          <td th:unless="${#strings.isEmpty(study.lecturePath)}">
-            <a th:href="${study.lecturePath}" th:text="${study.lectureName}" target="_blank"></a>
+          <td>
+            <a th:href="'/lecture/' + ${study.lectureId}" th:text="${study.lectureName}"></a>
           </td>
           <td th:text="${study.sectionName}"></td>
           <td th:text="${study.studyName}"></td>
