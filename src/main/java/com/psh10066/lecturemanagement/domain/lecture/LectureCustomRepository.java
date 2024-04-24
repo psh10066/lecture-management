@@ -9,4 +9,6 @@ import org.springframework.data.domain.Pageable;
 public interface LectureCustomRepository {
 
     Page<LectureListDTO> findAllLecture(User user, Pageable pageable, String lectureName, LecturePlatform lecturePlatform);
+
+    Lecture findFetchByLectureInfo(Long lectureId);
 }

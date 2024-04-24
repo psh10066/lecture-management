@@ -14,7 +14,10 @@ import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.List;
 
+import static com.psh10066.lecturemanagement.domain.curriculum.QCurriculum.curriculum;
 import static com.psh10066.lecturemanagement.domain.lecture.QLecture.lecture;
+import static com.psh10066.lecturemanagement.domain.lecturer.QLecturer.lecturer;
+import static com.psh10066.lecturemanagement.domain.lecturetocurriculum.QLectureToCurriculum.lectureToCurriculum;
 
 @RequiredArgsConstructor
 public class LectureCustomRepositoryImpl implements LectureCustomRepository {
@@ -48,5 +51,16 @@ public class LectureCustomRepositoryImpl implements LectureCustomRepository {
             );
 
         return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);
+    }
+
+    @Override
+    public Lecture findFetchByLectureInfo(Long lectureId) {
+        return queryFactory.select(lecture)
+            .from(lecture)
+            .join(lecture.lectureToCurriculumList, lectureToCurriculum).fetchJoin()
+            .join(lectureToCurriculum.curriculum, curriculum).fetchJoin()
+            .leftJoin(curriculum.lecturer, lecturer).fetchJoin()
+            .where(lecture.lectureId.eq(lectureId))
+            .fetchOne();
     }
 }

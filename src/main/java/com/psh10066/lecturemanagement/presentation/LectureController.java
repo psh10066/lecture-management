@@ -4,10 +4,7 @@ import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.infrastructure.paging.PagingMaker;
-import com.psh10066.lecturemanagement.presentation.dto.LectureListDTO;
-import com.psh10066.lecturemanagement.presentation.dto.LecturesRequest;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
+import com.psh10066.lecturemanagement.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,10 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
@@ -41,6 +35,14 @@ public class LectureController {
         model.addAttribute("paging", pagingMaker.getPaging(pageable, lectureList));
         model.addAttribute("lectures", lectureList);
         return "lecture/list";
+    }
+
+    @GetMapping("/{lectureId}")
+    public String lectureInfo(Model model, @PathVariable Long lectureId) {
+
+        LectureInfoDTO lectureInfo = lectureService.lectureInfo(lectureId);
+        model.addAttribute("lecture", lectureInfo);
+        return "lecture/info";
     }
 
     private <T> ModelAndView registerForm(LecturePlatform lecturePlatform, T request) {

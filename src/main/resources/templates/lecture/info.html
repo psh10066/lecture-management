@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+  <title>강의 정보</title>
+</head>
+<body>
+<h1 layout:fragment="title" th:text="${lecture.lectureName}"></h1>
+<p layout:fragment="subtitle">
+  <a th:href="${lecture.lecturePath}" th:text="${lecture.lecturePath}"></a>
+</p>
+<main layout:fragment="content">
+  <article th:each="curriculum : ${lecture.curriculums}">
+    <details th:open="${lecture.lecturePlatform.toString()} == 'INFLEARN'">
+      <summary>
+        <span class="grid">
+          <strong th:text="${curriculum.curriculumName}"></strong>
+          <span th:if="${curriculum.lecturerName} != null" th:text="${curriculum.lecturerName}"></span>
+          <span th:unless="${curriculum.lecturerName} != null">-</span>
+        </span>
+      </summary>
+      <table>
+        <thead>
+        <tr>
+          <th scope="col">학습 목록</th>
+          <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="section : ${curriculum.sections}">
+          <tr th:if="${curriculum.sections.size()} > 1">
+            <td><strong th:text="${section.sectionName}"></strong></td>
+            <td></td>
+          </tr>
+          <tr th:each="study : ${section.studies}">
+            <td th:text="${study.studyName}"></td>
+            <td th:if="${study.studyTime} != null" th:text="${#temporals.format(study.studyTime, 'HH:mm:ss')}"></td>
+            <td th:unless="${study.studyTime} != null">-</td>
+          </tr>
+        </th:block>
+        </tbody>
+      </table>
+    </details>
+  </article>
+</main>
+</body>
+</html>

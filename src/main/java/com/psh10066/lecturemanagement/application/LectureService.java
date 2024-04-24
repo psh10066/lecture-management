@@ -3,6 +3,7 @@ package com.psh10066.lecturemanagement.application;
 import com.psh10066.lecturemanagement.domain.curriculum.Curriculum;
 import com.psh10066.lecturemanagement.domain.curriculum.CurriculumRepository;
 import com.psh10066.lecturemanagement.domain.lecture.Lecture;
+import com.psh10066.lecturemanagement.domain.lecture.LectureMapper;
 import com.psh10066.lecturemanagement.domain.lecture.LectureRepository;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.lecturer.Lecturer;
@@ -15,10 +16,7 @@ import com.psh10066.lecturemanagement.domain.study.Study;
 import com.psh10066.lecturemanagement.domain.study.StudyRepository;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.presentation.dto.LectureListDTO;
-import com.psh10066.lecturemanagement.presentation.dto.LecturesRequest;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterFastcampusLectureRequest;
-import com.psh10066.lecturemanagement.presentation.dto.RegisterInflearnLectureRequest;
+import com.psh10066.lecturemanagement.presentation.dto.*;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
@@ -54,6 +52,12 @@ public class LectureService {
 
     public Page<LectureListDTO> lectureList(User user, Pageable pageable, LecturesRequest request) {
         return lectureRepository.findAllLecture(user, pageable, request.lectureName(), request.lecturePlatform());
+    }
+
+    @Transactional(readOnly = true)
+    public LectureInfoDTO lectureInfo(Long lectureId) {
+        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
+        return LectureMapper.INSTANCE.toLectureInfo(lecture);
     }
 
     @Transactional

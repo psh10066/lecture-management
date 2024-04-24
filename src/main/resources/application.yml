@@ -6,6 +6,7 @@ spring:
     open-in-view: false
     properties:
       hibernate:
+        default_batch_fetch_size: 100
         format_sql: true
         highlight_sql: true
   data:
