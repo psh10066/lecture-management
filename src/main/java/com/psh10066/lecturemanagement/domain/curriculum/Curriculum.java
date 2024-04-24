@@ -2,11 +2,14 @@ package com.psh10066.lecturemanagement.domain.curriculum;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
 import com.psh10066.lecturemanagement.domain.lecturer.Lecturer;
+import com.psh10066.lecturemanagement.domain.section.Section;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+
+import java.util.List;
 
 @Comment("커리큘럼")
 @Getter
@@ -27,6 +30,9 @@ public class Curriculum extends AuditingFields {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_id")
     private Lecturer lecturer;
+
+    @OneToMany(mappedBy = "curriculum")
+    private List<Section> sectionList;
 
     private Curriculum(String curriculumName, Lecturer lecturer) {
         this.curriculumName = curriculumName;

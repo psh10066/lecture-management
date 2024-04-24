@@ -2,12 +2,15 @@ package com.psh10066.lecturemanagement.domain.lecture;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
+import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculum;
 import com.psh10066.lecturemanagement.domain.user.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+
+import java.util.List;
 
 @Comment("강의")
 @Getter
@@ -36,6 +39,9 @@ public class Lecture extends AuditingFields {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "lecture")
+    private List<LectureToCurriculum> lectureToCurriculumList;
 
     private Lecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, User user) {
         this.lectureName = lectureName;
