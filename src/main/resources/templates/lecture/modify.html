@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+  <title>강사 등록/수정</title>
+</head>
+<body>
+<h1 layout:fragment="title" th:text="${lecture.lectureName}"></h1>
+<p layout:fragment="subtitle">
+  <a th:href="${lecture.lecturePath}" th:text="${lecture.lecturePath}"></a>
+</p>
+<main layout:fragment="content">
+  <p>
+    <a th:href="'/lecture/' + ${lectureId}">돌아가기</a>
+  </p>
+  <form th:action="'/lecture/' + ${lectureId} + '/modify'" method="post">
+    <table>
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">커리큘럼명</th>
+        <th scope="col">강사명</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="curriculum : ${lecture.curriculums}">
+        <input type="hidden" th:name="'curriculumList[' + ${curriculumStat.index} + '].curriculumId'" th:value="${curriculum.curriculumId}">
+        <th scope="row" th:text="${curriculumStat.count}"></th>
+        <td th:text="${curriculum.curriculumName}"></td>
+        <td>
+          <input style="margin-bottom: 0" type="text" th:name="'curriculumList[' + ${curriculumStat.index} + '].lecturerName'" th:value="${curriculum.lecturerName}">
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <input type="submit" value="강사 등록/수정">
+  </form>
+</main>
+</body>
+</html>

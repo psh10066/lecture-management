@@ -10,6 +10,9 @@
   <a th:href="${lecture.lecturePath}" th:text="${lecture.lecturePath}"></a>
 </p>
 <main layout:fragment="content">
+  <p>
+    <a th:href="'/lecture/' + ${lecture.lectureId} + '/modify'">강사 등록/수정</a>
+  </p>
   <article th:each="curriculum : ${lecture.curriculums}">
     <details th:open="${lecture.lecturePlatform.toString()} == 'INFLEARN'">
       <summary>

@@ -4,6 +4,7 @@ import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurric
 import com.psh10066.lecturemanagement.domain.section.Section;
 import com.psh10066.lecturemanagement.domain.study.Study;
 import com.psh10066.lecturemanagement.presentation.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.presentation.dto.LectureModifyInfoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -25,4 +26,11 @@ public interface LectureMapper {
     LectureInfoDTO.SectionDTO toSectionInfo(Section section);
 
     LectureInfoDTO.StudyDTO toStudyInfo(Study study);
+
+    @Mapping(source = "lectureToCurriculumList", target = "curriculums")
+    LectureModifyInfoDTO toLectureModifyInfo(Lecture lecture);
+
+    @Mapping(source = "curriculum", target = ".")
+    @Mapping(source = "curriculum.lecturer", target = ".")
+    LectureModifyInfoDTO.CurriculumDTO toCurriculumModifyInfo(LectureToCurriculum lectureToCurriculum);
 }

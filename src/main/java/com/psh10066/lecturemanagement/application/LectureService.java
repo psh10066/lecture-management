@@ -32,6 +32,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,6 +60,33 @@ public class LectureService {
     public LectureInfoDTO lectureInfo(Long lectureId) {
         Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
         return LectureMapper.INSTANCE.toLectureInfo(lecture);
+    }
+
+    @Transactional(readOnly = true)
+    public LectureModifyInfoDTO lectureModifyInfo(Long lectureId) {
+        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
+        return LectureMapper.INSTANCE.toLectureModifyInfo(lecture);
+    }
+
+    @Transactional
+    public void modifyLecture(User user, Long lectureId, ModifyLectureRequest request) {
+        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
+        Map<Long, Curriculum> curriculumMap = lecture.getLectureToCurriculumList().stream()
+            .collect(Collectors.toMap(
+                o -> o.getCurriculum().getCurriculumId(),
+                LectureToCurriculum::getCurriculum
+            ));
+
+        request.getCurriculumList().forEach(input -> {
+            if (curriculumMap.containsKey(input.getCurriculumId())) {
+                Curriculum curriculum = curriculumMap.get(input.getCurriculumId());
+                Lecturer lecturer = StringUtils.isNotBlank(input.getLecturerName())
+                    ? lecturerRepository.findByLecturerNameAndUser(input.getLecturerName(), user)
+                    .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(input.getLecturerName(), user)))
+                    : null;
+                curriculum.updateCurriculum(lecturer);
+            }
+        });
     }
 
     @Transactional

@@ -45,6 +45,20 @@ public class LectureController {
         return "lecture/info";
     }
 
+    @GetMapping("/{lectureId}/modify")
+    public String lectureModify(Model model, @PathVariable Long lectureId) {
+
+        LectureModifyInfoDTO lectureInfo = lectureService.lectureModifyInfo(lectureId);
+        model.addAttribute("lecture", lectureInfo);
+        return "lecture/modify";
+    }
+
+    @PostMapping("/{lectureId}/modify")
+    public String lectureModify(@AuthenticationPrincipal User user, @PathVariable Long lectureId, @ModelAttribute("request") ModifyLectureRequest request) {
+        lectureService.modifyLecture(user, lectureId, request);
+        return "redirect:/lecture/" + lectureId;
+    }
+
     private <T> ModelAndView registerForm(LecturePlatform lecturePlatform, T request) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("request", request);
