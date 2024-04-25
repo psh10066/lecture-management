@@ -2,6 +2,7 @@ package com.psh10066.lecturemanagement.presentation;
 
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.application.StudyService;
+import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.infrastructure.paging.PagingMaker;
 import com.psh10066.lecturemanagement.presentation.dto.StudiesRequest;
@@ -27,6 +28,7 @@ public class StudyController {
     @GetMapping
     public String studies(Model model, @AuthenticationPrincipal User user, Pageable pageable, StudiesRequest request) {
         model.addAttribute("request", request);
+        model.addAttribute("lecturePlatforms", LecturePlatform.values());
         model.addAttribute("lectures", lectureService.lectureList(user));
 
         Page<StudyListDTO> studyList = studyService.studyList(user, pageable, request);

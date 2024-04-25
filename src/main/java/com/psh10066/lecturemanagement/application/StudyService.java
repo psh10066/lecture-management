@@ -16,6 +16,6 @@ public class StudyService {
     private final StudyRepository studyRepository;
 
     public Page<StudyListDTO> studyList(User user, Pageable pageable, StudiesRequest request) {
-        return studyRepository.findAllStudy(user, pageable, request.lectureId(), request.lecturerName(), request.studyName());
+        return studyRepository.findAllStudy(user, pageable, request.lecturePlatform(), request.lectureId(), request.lecturerName(), request.studyName());
     }
 }

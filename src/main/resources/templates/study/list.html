@@ -9,16 +9,33 @@
 <p layout:fragment="subtitle">등록된 학습 목록을 확인할 수 있습니다.</p>
 <main layout:fragment="content">
   <form th:action="@{/study}" method="get" th:object="${request}">
-    <fieldset role="group">
-      <select name="lectureId" aria-label="강의">
-        <option value="">강의</option>
-        <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}"
-                th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
-      </select>
-      <input type="text" name="lecturerName" th:value="*{lecturerName}" placeholder="강사명">
-      <input type="text" name="studyName" th:value="*{studyName}" placeholder="학습명">
-      <input type="submit" value="검색">
+    <fieldset class="grid">
+      <label>
+        강의 플랫폼
+        <select name="lecturePlatform" aria-label="강의">
+          <option value="">강의 플랫폼</option>
+          <option th:selected="${lecturePlatform} == *{lecturePlatform}" th:each="lecturePlatform : ${lecturePlatforms}"
+                  th:value="${lecturePlatform}" th:text="${lecturePlatform.name}"></option>
+        </select>
+      </label>
+      <label>
+        강의
+        <select name="lectureId" aria-label="강의">
+          <option value="">강의</option>
+          <option th:selected="${lecture.lectureId} == *{lectureId}" th:each="lecture : ${lectures}"
+                  th:value="${lecture.lectureId}" th:text="${lecture.lectureName}"></option>
+        </select>
+      </label>
+      <label>
+        강사명
+        <input type="text" name="lecturerName" th:value="*{lecturerName}" placeholder="강사명">
+      </label>
+      <label>
+        학습명
+        <input type="text" name="studyName" th:value="*{studyName}" placeholder="학습명">
+      </label>
     </fieldset>
+    <input type="submit" value="검색">
   </form>
   <hr>
   <section id="tables">

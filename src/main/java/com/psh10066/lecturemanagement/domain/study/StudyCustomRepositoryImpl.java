@@ -1,5 +1,6 @@
 package com.psh10066.lecturemanagement.domain.study;
 
+import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.StudyListDTO;
 import com.querydsl.core.types.Projections;
@@ -26,7 +27,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<StudyListDTO> findAllStudy(User user, Pageable pageable, Long lectureId, String lecturerName, String studyName) {
+    public Page<StudyListDTO> findAllStudy(User user, Pageable pageable, LecturePlatform lecturePlatform, Long lectureId, String lecturerName, String studyName) {
         List<StudyListDTO> fetch = queryFactory.select(Projections.constructor(StudyListDTO.class,
                 lecture.lectureId,
                 lecture.lectureName,
@@ -44,6 +45,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
                 lecture.user.eq(user),
+                lecturePlatform != null ? lecture.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
@@ -61,6 +63,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
                 lecture.user.eq(user),
+                lecturePlatform != null ? lecture.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
