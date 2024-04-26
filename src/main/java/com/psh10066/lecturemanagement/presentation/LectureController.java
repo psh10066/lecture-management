@@ -78,15 +78,16 @@ public class LectureController {
         if (bindingResult.hasErrors()) {
             return this.registerForm(LecturePlatform.FASTCAMPUS, request);
         }
+        Long lectureId;
         try {
-            lectureService.registerFastcampusLecture(user, request);
+            lectureId = lectureService.registerFastcampusLecture(user, request).getLectureId();
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
             return this.registerForm(LecturePlatform.FASTCAMPUS, request);
         }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/study");
+        modelAndView.setViewName("redirect:/lecture/" + lectureId);
         return modelAndView;
     }
 
@@ -100,15 +101,16 @@ public class LectureController {
         if (bindingResult.hasErrors()) {
             return this.registerForm(LecturePlatform.INFLEARN, request);
         }
+        Long lectureId;
         try {
-            lectureService.registerInflearnLecture(user, request);
+            lectureId = lectureService.registerInflearnLecture(user, request).getLectureId();
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
             return this.registerForm(LecturePlatform.INFLEARN, request);
         }
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/study");
+        modelAndView.setViewName("redirect:/lecture/" + lectureId);
         return modelAndView;
     }
 }

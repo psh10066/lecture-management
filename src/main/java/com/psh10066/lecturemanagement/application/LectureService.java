@@ -90,7 +90,7 @@ public class LectureService {
     }
 
     @Transactional
-    public void registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request) {
+    public Lecture registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request) {
         Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath(), user));
         String[] split = request.lectureInfo().split("\r\n");
         Curriculum curriculum = null;
@@ -126,10 +126,11 @@ public class LectureService {
             studyRepository.save(Study.createStudy(s, DateTimeUtil.parseTime(split[i + 1]), section));
             i++;
         }
+        return lecture;
     }
 
     @Transactional
-    public void registerInflearnLecture(User user, RegisterInflearnLectureRequest request) {
+    public Lecture registerInflearnLecture(User user, RegisterInflearnLectureRequest request) {
         String prefix = "https://www.inflearn.com/course/";
         if (!request.lecturePath().startsWith(prefix)) {
             throw new RuntimeException("잘못된 강의 경로입니다.");
@@ -169,5 +170,6 @@ public class LectureService {
                 studyRepository.save(Study.createStudy(studyName, DateTimeUtil.parseTime(studyTime), section));
             }
         }
+        return lecture;
     }
 }
