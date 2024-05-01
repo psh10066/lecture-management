@@ -3,12 +3,12 @@ package com.psh10066.lecturemanagement.domain.lecture;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.LectureListDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 public interface LectureCustomRepository {
 
-    Page<LectureListDTO> findAllLecture(User user, Pageable pageable, String lectureName, LecturePlatform lecturePlatform);
+    List<LectureListDTO> findAllLecture(User user, String lectureName, LecturePlatform lecturePlatform);
 
     Lecture findFetchByLectureInfo(Long lectureId);
 }

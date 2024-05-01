@@ -3,12 +3,9 @@ package com.psh10066.lecturemanagement.presentation;
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.user.User;
-import com.psh10066.lecturemanagement.infrastructure.paging.PagingMaker;
 import com.psh10066.lecturemanagement.presentation.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,22 +14,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/lecture")
 public class LectureController {
 
-    private final PagingMaker pagingMaker;
     private final LectureService lectureService;
 
     @GetMapping
-    public String lectures(Model model, @AuthenticationPrincipal User user, Pageable pageable, LecturesRequest request) {
+    public String lectures(Model model, @AuthenticationPrincipal User user, LecturesRequest request) {
         model.addAttribute("request", request);
         model.addAttribute("lecturePlatforms", LecturePlatform.values());
 
-        Page<LectureListDTO> lectureList = lectureService.lectureList(user, pageable, request);
-        model.addAttribute("paging", pagingMaker.getPaging(pageable, lectureList));
+        List<LectureListDTO> lectureList = lectureService.lectureList(user, request);
         model.addAttribute("lectures", lectureList);
         return "lecture/list";
     }

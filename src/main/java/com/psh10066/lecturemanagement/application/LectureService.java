@@ -23,8 +23,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,8 +50,8 @@ public class LectureService {
             .toList();
     }
 
-    public Page<LectureListDTO> lectureList(User user, Pageable pageable, LecturesRequest request) {
-        return lectureRepository.findAllLecture(user, pageable, request.lectureName(), request.lecturePlatform());
+    public List<LectureListDTO> lectureList(User user, LecturesRequest request) {
+        return lectureRepository.findAllLecture(user, request.lectureName(), request.lecturePlatform());
     }
 
     @Transactional(readOnly = true)

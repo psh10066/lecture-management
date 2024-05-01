@@ -27,7 +27,7 @@
   </form>
   <hr>
   <section id="tables">
-    <h2 th:text="'강의 목록 (총 ' + ${paging.totalElements} + '개)'"></h2>
+    <h2 th:text="'강의 목록 (총 ' + ${lectures.size()} + '개)'"></h2>
     <div>
       <table class="striped">
         <thead>
@@ -40,7 +40,7 @@
         </thead>
         <tbody>
         <tr th:each="lecture : ${lectures}">
-          <th scope="row" th:text="${paging.rowStartNumber} - ${lectureStat.index}"></th>
+          <th scope="row" th:text="${lectures.size()} - ${lectureStat.index}"></th>
           <td th:text="${lecture.lecturePlatform.name}"></td>
           <td>
             <a th:href="'/lecture/' + ${lecture.lectureId}" th:text="${lecture.lectureName}"></a>
@@ -52,7 +52,6 @@
         </tr>
         </tbody>
       </table>
-      <div th:replace="~{common/fragment::paging}"></div>
     </div>
   </section>
 </main>
