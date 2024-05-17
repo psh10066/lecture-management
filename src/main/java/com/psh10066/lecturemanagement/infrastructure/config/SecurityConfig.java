@@ -1,5 +1,6 @@
 package com.psh10066.lecturemanagement.infrastructure.config;
 
+import com.psh10066.lecturemanagement.infrastructure.filter.ContentCachingFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
@@ -50,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
                 .anyRequest().hasRole("USER")
             )
+            .addFilterAfter(new ContentCachingFilter(), HeaderWriterFilter.class)
         ;
 
         return http.build();
