@@ -2,8 +2,9 @@ package com.psh10066.lecturemanagement.systemlog.adapter.in;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.psh10066.lecturemanagement.systemlog.domain.SystemLog;
-import com.psh10066.lecturemanagement.systemlog.application.port.out.SystemLogRepository;
+import com.psh10066.lecturemanagement.systemlog.application.port.in.CreateErrorLogCommand;
+import com.psh10066.lecturemanagement.systemlog.application.port.in.CreateSuccessLogCommand;
+import com.psh10066.lecturemanagement.systemlog.application.port.in.SystemLogService;
 import com.psh10066.lecturemanagement.user.domain.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -22,11 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Component
 @RequiredArgsConstructor
 public class LogInterceptor implements HandlerInterceptor {
 
     private final ObjectMapper objectMapper;
-    private final SystemLogRepository systemLogRepository;
+    private final SystemLogService systemLogService;
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws JsonProcessingException {
@@ -48,13 +51,11 @@ public class LogInterceptor implements HandlerInterceptor {
         String requestHeaders = objectMapper.writeValueAsString(this.getHeaders(request));
         String responseHeaders = objectMapper.writeValueAsString(this.getHeaders(response));
 
-        SystemLog systemLog;
         if (ex == null) {
-            systemLog = SystemLog.createSuccessLog(userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, this.getResponseBody(response));
+            systemLogService.createSuccessLog(new CreateSuccessLogCommand(userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, this.getResponseBody(response)));
         } else {
-            systemLog = SystemLog.createErrorLog(userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, ex.getMessage());
+            systemLogService.createErrorLog(new CreateErrorLogCommand(userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, ex.getMessage()));
         }
-        systemLogRepository.save(systemLog);
     }
 
     private Long getUserId() {
