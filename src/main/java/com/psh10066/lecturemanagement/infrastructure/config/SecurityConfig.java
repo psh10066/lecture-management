@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.infrastructure.config;
 
-import com.psh10066.lecturemanagement.infrastructure.filter.ContentCachingFilter;
+import com.psh10066.lecturemanagement.systemlog.adapter.in.config.ContentCachingFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;

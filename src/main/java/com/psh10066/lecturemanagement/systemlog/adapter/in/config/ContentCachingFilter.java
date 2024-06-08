@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.filter;
+package com.psh10066.lecturemanagement.systemlog.adapter.in.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

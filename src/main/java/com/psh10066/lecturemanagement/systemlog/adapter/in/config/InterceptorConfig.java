@@ -1,7 +1,8 @@
-package com.psh10066.lecturemanagement.infrastructure.interceptor;
+package com.psh10066.lecturemanagement.systemlog.adapter.in.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.psh10066.lecturemanagement.domain.systemlog.SystemLogRepository;
+import com.psh10066.lecturemanagement.systemlog.adapter.in.LogInterceptor;
+import com.psh10066.lecturemanagement.systemlog.application.port.out.SystemLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

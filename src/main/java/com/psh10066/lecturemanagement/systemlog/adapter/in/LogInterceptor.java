@@ -1,9 +1,9 @@
-package com.psh10066.lecturemanagement.infrastructure.interceptor;
+package com.psh10066.lecturemanagement.systemlog.adapter.in;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.psh10066.lecturemanagement.domain.systemlog.SystemLog;
-import com.psh10066.lecturemanagement.domain.systemlog.SystemLogRepository;
+import com.psh10066.lecturemanagement.systemlog.domain.SystemLog;
+import com.psh10066.lecturemanagement.systemlog.application.port.out.SystemLogRepository;
 import com.psh10066.lecturemanagement.user.domain.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;

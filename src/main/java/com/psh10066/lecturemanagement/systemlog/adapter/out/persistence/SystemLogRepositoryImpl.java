@@ -1,5 +1,7 @@
-package com.psh10066.lecturemanagement.domain.systemlog;
+package com.psh10066.lecturemanagement.systemlog.adapter.out.persistence;
 
+import com.psh10066.lecturemanagement.systemlog.domain.SystemLog;
+import com.psh10066.lecturemanagement.systemlog.application.port.out.SystemLogRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
