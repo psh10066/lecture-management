@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.converter;
+package com.psh10066.lecturemanagement.jpaclient.converter;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

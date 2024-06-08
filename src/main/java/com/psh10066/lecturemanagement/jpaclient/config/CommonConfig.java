@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.config;
+package com.psh10066.lecturemanagement.jpaclient.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

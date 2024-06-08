@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.paging;
+package com.psh10066.lecturemanagement.jpaclient.paging;
 
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;

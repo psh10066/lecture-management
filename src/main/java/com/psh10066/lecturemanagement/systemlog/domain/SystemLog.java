@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.systemlog.domain;
 
-import com.psh10066.lecturemanagement.domain.common.AuditingFields;
+import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

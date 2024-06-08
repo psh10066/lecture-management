@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.paging;
+package com.psh10066.lecturemanagement.jpaclient.paging;
 
 import lombok.Getter;
 import org.springframework.data.domain.Page;

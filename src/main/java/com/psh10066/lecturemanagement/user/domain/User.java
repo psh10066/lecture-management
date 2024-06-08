@@ -1,7 +1,7 @@
 package com.psh10066.lecturemanagement.user.domain;
 
-import com.psh10066.lecturemanagement.domain.common.AuditingFields;
-import com.psh10066.lecturemanagement.infrastructure.converter.PasswordConverter;
+import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
+import com.psh10066.lecturemanagement.jpaclient.converter.PasswordConverter;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

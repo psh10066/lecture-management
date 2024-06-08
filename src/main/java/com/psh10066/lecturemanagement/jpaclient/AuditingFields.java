@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.domain.common;
+package com.psh10066.lecturemanagement.jpaclient;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
