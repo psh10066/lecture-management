@@ -1,29 +1,8 @@
 package com.psh10066.lecturemanagement.application;
 
-import com.psh10066.lecturemanagement.domain.user.User;
-import com.psh10066.lecturemanagement.domain.user.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+public interface UserService {
 
-@Service
-@RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+    boolean existsByUsername(String username);
 
-    private final UserRepository userRepository;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 사용자입니다."));
-    }
-
-    public boolean existsByUsername(String username) {
-        return userRepository.findByUsername(username).isPresent();
-    }
-
-    public void save(String username, String password) {
-        userRepository.save(User.createUser(username, password));
-    }
+    void save(String username, String password);
 }
