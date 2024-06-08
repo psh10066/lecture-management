@@ -3,7 +3,7 @@ package com.psh10066.lecturemanagement.domain.lecture;
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
 import com.psh10066.lecturemanagement.domain.lecturetocurriculum.LectureToCurriculum;
-import com.psh10066.lecturemanagement.domain.user.User;
+import com.psh10066.lecturemanagement.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

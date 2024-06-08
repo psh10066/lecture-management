@@ -1,4 +1,6 @@
-package com.psh10066.lecturemanagement.domain.user;
+package com.psh10066.lecturemanagement.user.application.port.out;
+
+import com.psh10066.lecturemanagement.user.domain.User;
 
 import java.util.Optional;
 

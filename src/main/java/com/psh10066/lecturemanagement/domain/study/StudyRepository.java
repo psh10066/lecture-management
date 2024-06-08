@@ -1,8 +1,8 @@
 package com.psh10066.lecturemanagement.domain.study;
 
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
-import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.StudyListDTO;
+import com.psh10066.lecturemanagement.user.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

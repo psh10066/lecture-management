@@ -1,5 +1,7 @@
-package com.psh10066.lecturemanagement.domain.user;
+package com.psh10066.lecturemanagement.user.adapter.out.persistence;
 
+import com.psh10066.lecturemanagement.user.application.port.out.UserRepository;
+import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

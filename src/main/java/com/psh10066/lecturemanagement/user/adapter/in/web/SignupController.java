@@ -1,7 +1,7 @@
-package com.psh10066.lecturemanagement.presentation;
+package com.psh10066.lecturemanagement.user.adapter.in.web;
 
-import com.psh10066.lecturemanagement.application.UserService;
-import com.psh10066.lecturemanagement.presentation.dto.SignupRequest;
+import com.psh10066.lecturemanagement.user.adapter.in.web.request.SignupRequest;
+import com.psh10066.lecturemanagement.user.application.port.in.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

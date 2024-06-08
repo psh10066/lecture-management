@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.domain.user;
+package com.psh10066.lecturemanagement.user.domain;
 
 import com.psh10066.lecturemanagement.domain.common.AuditingFields;
 import com.psh10066.lecturemanagement.infrastructure.converter.PasswordConverter;

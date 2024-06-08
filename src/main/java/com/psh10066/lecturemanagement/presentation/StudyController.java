@@ -3,7 +3,7 @@ package com.psh10066.lecturemanagement.presentation;
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.application.StudyService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
-import com.psh10066.lecturemanagement.domain.user.User;
+import com.psh10066.lecturemanagement.user.domain.User;
 import com.psh10066.lecturemanagement.infrastructure.paging.PagingMaker;
 import com.psh10066.lecturemanagement.presentation.dto.StudiesRequest;
 import com.psh10066.lecturemanagement.presentation.dto.StudyListDTO;

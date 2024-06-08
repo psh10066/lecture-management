@@ -1,6 +1,6 @@
-package com.psh10066.lecturemanagement.presentation;
+package com.psh10066.lecturemanagement.user.adapter.in.web;
 
-import com.psh10066.lecturemanagement.presentation.dto.LoginResult;
+import com.psh10066.lecturemanagement.user.adapter.in.web.request.LoginResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

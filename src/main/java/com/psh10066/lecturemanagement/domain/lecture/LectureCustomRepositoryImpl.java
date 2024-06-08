@@ -1,8 +1,8 @@
 package com.psh10066.lecturemanagement.domain.lecture;
 
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
-import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.user.domain.User;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;

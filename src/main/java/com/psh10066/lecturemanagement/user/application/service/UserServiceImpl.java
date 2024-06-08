@@ -1,7 +1,8 @@
-package com.psh10066.lecturemanagement.application;
+package com.psh10066.lecturemanagement.user.application.service;
 
-import com.psh10066.lecturemanagement.domain.user.User;
-import com.psh10066.lecturemanagement.domain.user.UserRepository;
+import com.psh10066.lecturemanagement.user.application.port.in.UserService;
+import com.psh10066.lecturemanagement.user.application.port.out.UserRepository;
+import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

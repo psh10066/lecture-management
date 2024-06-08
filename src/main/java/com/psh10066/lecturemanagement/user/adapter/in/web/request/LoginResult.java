@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.presentation.dto;
+package com.psh10066.lecturemanagement.user.adapter.in.web.request;
 
 public record LoginResult(
     String error,

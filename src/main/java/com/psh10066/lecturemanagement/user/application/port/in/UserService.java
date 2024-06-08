@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.application;
+package com.psh10066.lecturemanagement.user.application.port.in;
 
 public interface UserService {
 

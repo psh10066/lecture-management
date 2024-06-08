@@ -2,8 +2,8 @@ package com.psh10066.lecturemanagement.presentation;
 
 import com.psh10066.lecturemanagement.application.LectureService;
 import com.psh10066.lecturemanagement.domain.lecture.type.LecturePlatform;
-import com.psh10066.lecturemanagement.domain.user.User;
 import com.psh10066.lecturemanagement.presentation.dto.*;
+import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

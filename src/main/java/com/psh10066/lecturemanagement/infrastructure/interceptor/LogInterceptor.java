@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.psh10066.lecturemanagement.domain.systemlog.SystemLog;
 import com.psh10066.lecturemanagement.domain.systemlog.SystemLogRepository;
-import com.psh10066.lecturemanagement.domain.user.User;
+import com.psh10066.lecturemanagement.user.domain.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
