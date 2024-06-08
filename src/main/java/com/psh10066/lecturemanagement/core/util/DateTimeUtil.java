@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.infrastructure.util;
+package com.psh10066.lecturemanagement.core.util;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.AccessLevel;

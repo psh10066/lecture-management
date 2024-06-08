@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
-import com.psh10066.lecturemanagement.infrastructure.util.DateTimeUtil;
+import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;

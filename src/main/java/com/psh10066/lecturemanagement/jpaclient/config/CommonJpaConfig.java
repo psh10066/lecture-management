@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Configuration
 @EnableJpaAuditing
-public class CommonConfig {
+public class CommonJpaConfig {
 
     @PersistenceContext
     private EntityManager entityManager;
