@@ -19,9 +19,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -66,23 +66,24 @@ public class LogInterceptor implements HandlerInterceptor {
         return null;
     }
 
-    private Map<String, String> getHeaders(HttpServletRequest request) {
-        Map<String, String> headers = new HashMap<>();
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String headerName = headerNames.nextElement();
-            headers.put(headerName, request.getHeaders(headerName).toString());
-        }
-        return headers;
+    private Map<String, Collection<String>> getHeaders(HttpServletRequest request) {
+        Collection<String> headerNames = Collections.list(request.getHeaderNames());
+        return headerNames.stream()
+            .distinct()
+            .collect(Collectors.toMap(
+                headerName -> headerName,
+                headerName -> Collections.list(request.getHeaders(headerName))
+            ));
     }
 
-    private Map<String, String> getHeaders(HttpServletResponse response) {
-        Map<String, String> headers = new HashMap<>();
+    private Map<String, Collection<String>> getHeaders(HttpServletResponse response) {
         Collection<String> headerNames = response.getHeaderNames();
-        for (String headerName : headerNames) {
-            headers.put(headerName, response.getHeaders(headerName).toString());
-        }
-        return headers;
+        return headerNames.stream()
+            .distinct()
+            .collect(Collectors.toMap(
+                headerName -> headerName,
+                response::getHeaders
+            ));
     }
 
     @SneakyThrows
