@@ -1,76 +1,47 @@
 package com.psh10066.lecturemanagement.systemlog.domain;
 
-import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
+import com.psh10066.lecturemanagement.core.util.DateTimeFields;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
+import lombok.experimental.SuperBuilder;
 
-@Comment("시스템 로그")
 @Getter
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SystemLog extends AuditingFields {
+@SuperBuilder
+public class SystemLog extends DateTimeFields {
 
-    @Comment("시스템 로그 고유번호")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long systemLogId;
-
-    @Comment("시스템 로그 유형")
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private SystemLogType systemLogType;
-
-    @Comment("사용자 고유번호")
-    private Long userId;
-
-    @Comment("Http Method")
-    @Column(length = 20, nullable = false)
-    private String httpMethod;
-
-    @Comment("Request URL")
-    @Column(length = 4096, nullable = false)
-    private String requestURL;
-
-    @Comment("Request Parameters")
-    @Column(columnDefinition = "TEXT")
-    private String requestParameters;
-
-    @Comment("Request Headers")
-    @Column(columnDefinition = "TEXT")
-    private String requestHeaders;
-
-    @Comment("Response Headers")
-    @Column(columnDefinition = "TEXT")
-    private String responseHeaders;
-
-    @Comment("Response Body")
-    @Column(columnDefinition = "TEXT")
-    private String responseBody;
-
-    @Comment("Error Message")
-    @Column(length = 4096)
-    private String errorMessage;
+    private final Long systemLogId;
+    private final SystemLogType systemLogType;
+    private final Long userId;
+    private final String httpMethod;
+    private final String requestURL;
+    private final String requestParameters;
+    private final String requestHeaders;
+    private final String responseHeaders;
+    private final String responseBody;
+    private final String errorMessage;
 
     public static SystemLog createSuccessLog(Long userId, String httpMethod, String requestURL, String requestParameters, String requestHeaders, String responseHeaders, String responseBody) {
-        return new SystemLog(SystemLogType.SUCCESS, userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, responseBody, null);
+        return SystemLog.builder()
+            .systemLogType(SystemLogType.SUCCESS)
+            .userId(userId)
+            .httpMethod(httpMethod)
+            .requestURL(requestURL)
+            .requestParameters(requestParameters)
+            .requestHeaders(requestHeaders)
+            .responseHeaders(responseHeaders)
+            .responseBody(responseBody)
+            .build();
     }
 
     public static SystemLog createErrorLog(Long userId, String httpMethod, String requestURL, String requestParameters, String requestHeaders, String responseHeaders, String errorMessage) {
-        return new SystemLog(SystemLogType.ERROR, userId, httpMethod, requestURL, requestParameters, requestHeaders, responseHeaders, null, errorMessage);
-    }
-
-    private SystemLog(SystemLogType systemLogType, Long userId, String httpMethod, String requestURL, String requestParameters, String requestHeaders, String responseHeaders, String responseBody, String errorMessage) {
-        this.systemLogType = systemLogType;
-        this.userId = userId;
-        this.httpMethod = httpMethod;
-        this.requestURL = requestURL;
-        this.requestParameters = requestParameters;
-        this.requestHeaders = requestHeaders;
-        this.responseHeaders = responseHeaders;
-        this.responseBody = responseBody;
-        this.errorMessage = errorMessage;
+        return SystemLog.builder()
+            .systemLogType(SystemLogType.ERROR)
+            .userId(userId)
+            .httpMethod(httpMethod)
+            .requestURL(requestURL)
+            .requestParameters(requestParameters)
+            .requestHeaders(requestHeaders)
+            .responseHeaders(responseHeaders)
+            .errorMessage(errorMessage)
+            .build();
     }
 }
