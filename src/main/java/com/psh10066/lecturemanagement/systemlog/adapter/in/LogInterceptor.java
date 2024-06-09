@@ -2,10 +2,10 @@ package com.psh10066.lecturemanagement.systemlog.adapter.in;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.psh10066.lecturemanagement.core.UserDetailsWithId;
 import com.psh10066.lecturemanagement.systemlog.application.port.in.CreateErrorLogCommand;
 import com.psh10066.lecturemanagement.systemlog.application.port.in.CreateSuccessLogCommand;
 import com.psh10066.lecturemanagement.systemlog.application.port.in.SystemLogService;
-import com.psh10066.lecturemanagement.user.domain.User;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -60,7 +60,7 @@ public class LogInterceptor implements HandlerInterceptor {
 
     private Long getUserId() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof User user) {
+        if (principal instanceof UserDetailsWithId user) {
             return user.getUserId();
         }
         return null;

@@ -2,6 +2,7 @@ package com.psh10066.lecturemanagement.user.domain;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
 import com.psh10066.lecturemanagement.jpaclient.converter.PasswordConverter;
+import com.psh10066.lecturemanagement.core.UserDetailsWithId;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
@@ -17,7 +17,7 @@ import java.util.Collection;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends AuditingFields implements UserDetails {
+public class User extends AuditingFields implements UserDetailsWithId {
 
     @Comment("사용자 고유번호")
     @Id
