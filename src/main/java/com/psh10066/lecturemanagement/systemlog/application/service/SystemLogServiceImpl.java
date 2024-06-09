@@ -16,11 +16,31 @@ public class SystemLogServiceImpl implements SystemLogService {
 
     @Override
     public SystemLog createSuccessLog(CreateSuccessLogCommand command) {
-        return systemLogRepository.save(command.toDomain());
+        SystemLog successLog = SystemLog.createSuccessLog(
+            command.getUserId(),
+            command.getHttpMethod(),
+            command.getRequestURL(),
+            command.getRequestParameters(),
+            command.getRequestHeaders(),
+            command.getResponseHeaders(),
+            command.getResponseBody()
+        );
+
+        return systemLogRepository.save(successLog);
     }
 
     @Override
     public SystemLog createErrorLog(CreateErrorLogCommand command) {
-        return systemLogRepository.save(command.toDomain());
+        SystemLog errorLog = SystemLog.createErrorLog(
+            command.getUserId(),
+            command.getHttpMethod(),
+            command.getRequestURL(),
+            command.getRequestParameters(),
+            command.getRequestHeaders(),
+            command.getResponseHeaders(),
+            command.getErrorMessage()
+        );
+
+        return systemLogRepository.save(errorLog);
     }
 }

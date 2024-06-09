@@ -1,7 +1,6 @@
 package com.psh10066.lecturemanagement.systemlog.application.port.in;
 
 import com.psh10066.lecturemanagement.core.util.SelfValidating;
-import com.psh10066.lecturemanagement.systemlog.domain.SystemLog;
 import jakarta.validation.constraints.NotBlank;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -40,17 +39,5 @@ public class CreateErrorLogCommand extends SelfValidating<CreateErrorLogCommand>
         this.errorMessage = errorMessage;
 
         this.validateSelf();
-    }
-
-    public SystemLog toDomain() {
-        return SystemLog.createErrorLog(
-            this.userId,
-            this.httpMethod,
-            this.requestURL,
-            this.requestParameters,
-            this.requestHeaders,
-            this.responseHeaders,
-            this.errorMessage
-        );
     }
 }
