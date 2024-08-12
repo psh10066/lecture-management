@@ -1,6 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.domain;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
+import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,14 +27,14 @@ public class Lecturer extends AuditingFields {
     @Comment("사용자 고유번호")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserJpaEntity user;
 
-    private Lecturer(String lecturerName, User user) {
+    private Lecturer(String lecturerName, UserJpaEntity user) {
         this.lecturerName = lecturerName;
         this.user = user;
     }
 
     public static Lecturer createLecturer(String lecturerName, User user) {
-        return new Lecturer(lecturerName, user);
+        return new Lecturer(lecturerName, UserJpaEntity.from(user));
     }
 }

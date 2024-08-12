@@ -1,40 +1,24 @@
 package com.psh10066.lecturemanagement.user.domain;
 
-import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
-import com.psh10066.lecturemanagement.jpaclient.converter.PasswordConverter;
 import com.psh10066.lecturemanagement.core.UserDetailsWithId;
-import jakarta.persistence.*;
+import com.psh10066.lecturemanagement.core.util.DateTimeFields;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Comment;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.util.Collection;
 
-@Comment("사용자")
 @Getter
-@Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends AuditingFields implements UserDetailsWithId {
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class User extends DateTimeFields implements UserDetailsWithId {
 
-    @Comment("사용자 고유번호")
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
-
-    @Comment("사용자 아이디")
-    @Column(nullable = false)
     private String username;
-
-    @Comment("사용자 비밀번호")
-    @Column(nullable = false)
-    @Convert(converter = PasswordConverter.class)
     private String password;
-
-    @Comment("사용자 활성화 여부")
-    @Column(nullable = false)
     private boolean enabled;
 
     @Override
@@ -57,13 +41,11 @@ public class User extends AuditingFields implements UserDetailsWithId {
         return this.enabled;
     }
 
-    private User(String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.enabled = true;
-    }
-
     public static User createUser(String username, String password) {
-        return new User(username, password);
+        return User.builder()
+            .username(username)
+            .password(password)
+            .enabled(true)
+            .build();
     }
 }

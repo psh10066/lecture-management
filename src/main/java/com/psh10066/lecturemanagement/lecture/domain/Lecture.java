@@ -1,6 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.domain;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
+import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -36,12 +37,12 @@ public class Lecture extends AuditingFields {
     @Comment("사용자 고유번호")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserJpaEntity user;
 
     @OneToMany(mappedBy = "lecture")
     private List<LectureToCurriculum> lectureToCurriculumList;
 
-    private Lecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, User user) {
+    private Lecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, UserJpaEntity user) {
         this.lectureName = lectureName;
         this.lecturePlatform = lecturePlatform;
         this.lecturePath = lecturePath;
@@ -49,6 +50,6 @@ public class Lecture extends AuditingFields {
     }
 
     public static Lecture createLecture(String lectureName, LecturePlatform lecturePlatform, String lecturePath, User user) {
-        return new Lecture(lectureName, lecturePlatform, lecturePath, user);
+        return new Lecture(lectureName, lecturePlatform, lecturePath, UserJpaEntity.from(user));
     }
 }

@@ -4,6 +4,7 @@ import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
+import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -19,7 +20,7 @@ public class LectureRepositoryImpl implements LectureRepository {
 
     @Override
     public List<Lecture> findAllByUser(User user) {
-        return lectureJpaRepository.findAllByUser(user);
+        return lectureJpaRepository.findAllByUser(UserJpaEntity.from(user));
     }
 
     @Override

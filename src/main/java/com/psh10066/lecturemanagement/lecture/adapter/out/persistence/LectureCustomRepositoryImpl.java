@@ -3,6 +3,7 @@ package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
+import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -33,7 +34,7 @@ public class LectureCustomRepositoryImpl implements LectureCustomRepository {
             ))
             .from(lecture)
             .where(
-                lecture.user.eq(user),
+                lecture.user.eq(UserJpaEntity.from(user)),
                 StringUtils.isNotBlank(lectureName) ? lecture.lectureName.contains(lectureName) : null,
                 lecturePlatform != null ? lecture.lecturePlatform.eq(lecturePlatform) : null
             )

@@ -15,11 +15,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByUsername(String username) {
-        return userJpaRepository.findByUsername(username);
+        return userJpaRepository.findByUsername(username).map(UserJpaEntity::toModel);
     }
 
     @Override
     public User save(User user) {
-        return userJpaRepository.save(user);
+        return userJpaRepository.save(UserJpaEntity.from(user)).toModel();
     }
 }

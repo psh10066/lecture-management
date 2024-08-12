@@ -2,6 +2,7 @@ package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
+import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -30,6 +31,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
 
     @Override
     public Page<StudyListDTO> findAllStudy(User user, Pageable pageable, LecturePlatform lecturePlatform, Long lectureId, String lecturerName, String studyName) {
+        UserJpaEntity userJpaEntity = UserJpaEntity.from(user);
         List<StudyListDTO> fetch = queryFactory.select(Projections.constructor(StudyListDTO.class,
                 lecture.lectureId,
                 lecture.lectureName,
@@ -46,7 +48,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
-                lecture.user.eq(user),
+                lecture.user.eq(userJpaEntity),
                 lecturePlatform != null ? lecture.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
@@ -64,7 +66,7 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
-                lecture.user.eq(user),
+                lecture.user.eq(userJpaEntity),
                 lecturePlatform != null ? lecture.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lecture.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
