@@ -9,7 +9,7 @@ public interface SystemLogMapper {
 
     SystemLogMapper INSTANCE = Mappers.getMapper(SystemLogMapper.class);
 
-    SystemLogEntity from(SystemLog systemLog);
+    SystemLogJpaEntity from(SystemLog systemLog);
 
-    SystemLog toDomain(SystemLogEntity systemLogEntity);
+    SystemLog toModel(SystemLogJpaEntity systemLogJpaEntity);
 }

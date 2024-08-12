@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class SystemLogEntityTest {
+class SystemLogJpaEntityTest {
 
     @Test
     @DisplayName("도메인 엔티티에서 영속성 엔티티로 변환할 수 있다.")
@@ -32,30 +32,30 @@ class SystemLogEntityTest {
             .build();
 
         // when
-        SystemLogEntity systemLogEntity = SystemLogEntity.from(systemLog);
+        SystemLogJpaEntity systemLogJpaEntity = SystemLogJpaEntity.from(systemLog);
 
         // then
         assertAll(
-            () -> assertThat(systemLogEntity.getSystemLogId()).isEqualTo(1),
-            () -> assertThat(systemLogEntity.getSystemLogType()).isEqualTo(SystemLogType.SUCCESS),
-            () -> assertThat(systemLogEntity.getUserId()).isEqualTo(2),
-            () -> assertThat(systemLogEntity.getHttpMethod()).isEqualTo("GET"),
-            () -> assertThat(systemLogEntity.getRequestURL()).isEqualTo("http://localhost:8080/test"),
-            () -> assertThat(systemLogEntity.getRequestParameters()).isEqualTo("{\"requestParam1\": \"param1\"}"),
-            () -> assertThat(systemLogEntity.getRequestHeaders()).isEqualTo("{\"requestHeader1\": \"request1\"}"),
-            () -> assertThat(systemLogEntity.getResponseHeaders()).isEqualTo("{\"responseHeader1\": \"response1\"}"),
-            () -> assertThat(systemLogEntity.getResponseBody()).isEqualTo("{\"responseBody1\": \"body1\"}"),
-            () -> assertThat(systemLogEntity.getErrorMessage()).isEqualTo("Runtime Error!!"),
-            () -> assertThat(systemLogEntity.getCreatedAt()).isEqualTo(LocalDateTime.of(2023, 1, 2, 12, 34, 56)),
-            () -> assertThat(systemLogEntity.getUpdatedAt()).isEqualTo(LocalDateTime.of(2024, 2, 3, 5, 13, 43))
+            () -> assertThat(systemLogJpaEntity.getSystemLogId()).isEqualTo(1),
+            () -> assertThat(systemLogJpaEntity.getSystemLogType()).isEqualTo(SystemLogType.SUCCESS),
+            () -> assertThat(systemLogJpaEntity.getUserId()).isEqualTo(2),
+            () -> assertThat(systemLogJpaEntity.getHttpMethod()).isEqualTo("GET"),
+            () -> assertThat(systemLogJpaEntity.getRequestURL()).isEqualTo("http://localhost:8080/test"),
+            () -> assertThat(systemLogJpaEntity.getRequestParameters()).isEqualTo("{\"requestParam1\": \"param1\"}"),
+            () -> assertThat(systemLogJpaEntity.getRequestHeaders()).isEqualTo("{\"requestHeader1\": \"request1\"}"),
+            () -> assertThat(systemLogJpaEntity.getResponseHeaders()).isEqualTo("{\"responseHeader1\": \"response1\"}"),
+            () -> assertThat(systemLogJpaEntity.getResponseBody()).isEqualTo("{\"responseBody1\": \"body1\"}"),
+            () -> assertThat(systemLogJpaEntity.getErrorMessage()).isEqualTo("Runtime Error!!"),
+            () -> assertThat(systemLogJpaEntity.getCreatedAt()).isEqualTo(LocalDateTime.of(2023, 1, 2, 12, 34, 56)),
+            () -> assertThat(systemLogJpaEntity.getUpdatedAt()).isEqualTo(LocalDateTime.of(2024, 2, 3, 5, 13, 43))
         );
     }
 
     @Test
     @DisplayName("영속성 엔티티에서 도메인 엔티티로 변환할 수 있다.")
-    void toDomain() {
+    void toModel() {
         // given
-        SystemLogEntity systemLogEntity = SystemLogEntity.builder()
+        SystemLogJpaEntity systemLogJpaEntity = SystemLogJpaEntity.builder()
             .systemLogId(1L)
             .systemLogType(SystemLogType.SUCCESS)
             .userId(2L)
@@ -71,7 +71,7 @@ class SystemLogEntityTest {
             .build();
 
         // when
-        SystemLog systemLog = systemLogEntity.toDomain();
+        SystemLog systemLog = systemLogJpaEntity.toModel();
 
         // then
         assertAll(

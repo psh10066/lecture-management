@@ -13,6 +13,6 @@ public class SystemLogRepositoryImpl implements SystemLogRepository {
 
     @Override
     public SystemLog save(SystemLog systemLog) {
-        return systemLogJpaRepository.save(SystemLogEntity.from(systemLog)).toDomain();
+        return systemLogJpaRepository.save(SystemLogJpaEntity.from(systemLog)).toModel();
     }
 }

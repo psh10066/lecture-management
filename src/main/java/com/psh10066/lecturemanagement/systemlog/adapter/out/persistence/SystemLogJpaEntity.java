@@ -15,7 +15,7 @@ import org.hibernate.annotations.Comment;
 @Entity(name = "system_log")
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SystemLogEntity extends AuditingFields {
+public class SystemLogJpaEntity extends AuditingFields {
 
     @Comment("시스템 로그 고유번호")
     @Id
@@ -58,11 +58,11 @@ public class SystemLogEntity extends AuditingFields {
     @Column(length = 4096)
     private String errorMessage;
 
-    public static SystemLogEntity from(SystemLog systemLog) {
+    public static SystemLogJpaEntity from(SystemLog systemLog) {
         return SystemLogMapper.INSTANCE.from(systemLog);
     }
 
-    public SystemLog toDomain() {
-        return SystemLogMapper.INSTANCE.toDomain(this);
+    public SystemLog toModel() {
+        return SystemLogMapper.INSTANCE.toModel(this);
     }
 }
