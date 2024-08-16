@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.application.port.out;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 import com.psh10066.lecturemanagement.user.domain.User;
@@ -13,7 +13,7 @@ public interface LectureRepository {
 
     Lecture save(Lecture lecture);
 
-    List<LectureListDTO> findAllLecture(User user, String s, LecturePlatform lecturePlatform);
+    List<Lecture> findAllLecture(User user, String s, LecturePlatform lecturePlatform);
 
-    Lecture findFetchByLectureInfo(Long lectureId);
+    LectureInfoDTO findFetchByLectureInfo(Long lectureId);
 }

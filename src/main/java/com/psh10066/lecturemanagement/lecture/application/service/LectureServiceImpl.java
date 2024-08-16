@@ -1,8 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
 import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
@@ -26,8 +25,6 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,52 +37,33 @@ public class LectureServiceImpl implements LectureService {
     private final StudyRepository studyRepository;
     private final LecturerRepository lecturerRepository;
 
-    public List<LectureListDTO> lectureList(User user) {
-        return lectureRepository.findAllByUser(user).stream()
-            .map(LectureListDTO::from)
-            .toList();
+    public List<Lecture> lectureList(User user) {
+        return lectureRepository.findAllByUser(user);
     }
 
-    public List<LectureListDTO> lectureList(User user, LecturesRequest request) {
+    public List<Lecture> lectureList(User user, LecturesRequest request) {
         return lectureRepository.findAllLecture(user, request.lectureName(), request.lecturePlatform());
     }
 
     @Transactional(readOnly = true)
     public LectureInfoDTO lectureInfo(Long lectureId) {
-        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
-        return LectureMapper.INSTANCE.toLectureInfo(lecture);
+        return lectureRepository.findFetchByLectureInfo(lectureId);
     }
 
     @Transactional(readOnly = true)
     public LectureModifyInfoDTO lectureModifyInfo(Long lectureId) {
-        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
-        return LectureMapper.INSTANCE.toLectureModifyInfo(lecture);
+        LectureInfoDTO lectureInfoDTO = lectureRepository.findFetchByLectureInfo(lectureId);
+        return LectureMapper.INSTANCE.toLectureModifyInfo(lectureInfoDTO);
     }
 
     @Transactional
     public void modifyLecture(User user, Long lectureId, ModifyLectureRequest request) {
-        Lecture lecture = lectureRepository.findFetchByLectureInfo(lectureId);
-        Map<Long, Curriculum> curriculumMap = lecture.getLectureToCurriculumList().stream()
-            .collect(Collectors.toMap(
-                o -> o.getCurriculum().getCurriculumId(),
-                LectureToCurriculum::getCurriculum
-            ));
-
-        request.getCurriculumList().forEach(input -> {
-            if (curriculumMap.containsKey(input.getCurriculumId())) {
-                Curriculum curriculum = curriculumMap.get(input.getCurriculumId());
-                Lecturer lecturer = StringUtils.isNotBlank(input.getLecturerName())
-                    ? lecturerRepository.findByLecturerNameAndUser(input.getLecturerName(), user)
-                    .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(input.getLecturerName(), user)))
-                    : null;
-                curriculum.updateCurriculum(lecturer);
-            }
-        });
+        curriculumRepository.updateLecturer(request.getCurriculumList(), user);
     }
 
     @Transactional
     public Lecture registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request) {
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath(), user));
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath(), user.getUserId()));
         String[] split = request.lectureInfo().split("\r\n");
         Curriculum curriculum = null;
         Section section = null;
@@ -146,7 +124,7 @@ public class LectureServiceImpl implements LectureService {
         String lectureName = baseDoc.getElementsByClass("cd-header__title").getFirst().ownText();
         String lecturerName = baseDoc.getElementsByClass("cd-header__instructors--main").getFirst().text();
 
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user));
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user.getUserId()));
         Lecturer lecturer = lecturerRepository.findByLecturerNameAndUser(lecturerName, user)
             .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName, user)));
         Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer));

@@ -1,10 +1,9 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
-import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,21 +19,23 @@ public class LectureRepositoryImpl implements LectureRepository {
 
     @Override
     public List<Lecture> findAllByUser(User user) {
-        return lectureJpaRepository.findAllByUser(UserJpaEntity.from(user));
+        return lectureJpaRepository.findAllByUserId(user.getUserId()).stream()
+            .map(LectureJpaEntity::toModel)
+            .toList();
     }
 
     @Override
     public Lecture save(Lecture lecture) {
-        return lectureJpaRepository.save(lecture);
+        return lectureJpaRepository.save(LectureJpaEntity.from(lecture)).toModel();
     }
 
     @Override
-    public List<LectureListDTO> findAllLecture(User user, String lectureName, LecturePlatform lecturePlatform) {
+    public List<Lecture> findAllLecture(User user, String lectureName, LecturePlatform lecturePlatform) {
         return lectureCustomRepository.findAllLecture(user, lectureName, lecturePlatform);
     }
 
     @Override
-    public Lecture findFetchByLectureInfo(Long lectureId) {
+    public LectureInfoDTO findFetchByLectureInfo(Long lectureId) {
         return lectureCustomRepository.findFetchByLectureInfo(lectureId);
     }
 }

@@ -1,7 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.adapter.in.web;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
@@ -35,7 +35,7 @@ public class LectureController {
         model.addAttribute("request", request);
         model.addAttribute("lecturePlatforms", LecturePlatform.values());
 
-        List<LectureListDTO> lectureList = lectureService.lectureList(user, request);
+        List<Lecture> lectureList = lectureService.lectureList(user, request);
         model.addAttribute("lectures", lectureList);
         return "lecture/list";
     }
@@ -83,7 +83,7 @@ public class LectureController {
         }
         Long lectureId;
         try {
-            lectureId = lectureService.registerFastcampusLecture(user, request).getLectureId();
+            lectureId = lectureService.registerFastcampusLecture(user, request).lectureId();
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
@@ -106,7 +106,7 @@ public class LectureController {
         }
         Long lectureId;
         try {
-            lectureId = lectureService.registerInflearnLecture(user, request).getLectureId();
+            lectureId = lectureService.registerInflearnLecture(user, request).lectureId();
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");

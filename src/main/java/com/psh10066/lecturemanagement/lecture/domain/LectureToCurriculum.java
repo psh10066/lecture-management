@@ -1,6 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.domain;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.LectureJpaEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,19 +22,19 @@ public class LectureToCurriculum extends AuditingFields {
     @Comment("강의 고유번호")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecture_id", nullable = false)
-    private Lecture lecture;
+    private LectureJpaEntity lectureJpaEntity;
 
     @Comment("커리큘럼 고유번호")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curriculum_id", nullable = false)
     private Curriculum curriculum;
 
-    private LectureToCurriculum(Lecture lecture, Curriculum curriculum) {
-        this.lecture = lecture;
+    private LectureToCurriculum(LectureJpaEntity lectureJpaEntity, Curriculum curriculum) {
+        this.lectureJpaEntity = lectureJpaEntity;
         this.curriculum = curriculum;
     }
 
     public static LectureToCurriculum createLectureToCurriculum(Lecture lecture, Curriculum curriculum) {
-        return new LectureToCurriculum(lecture, curriculum);
+        return new LectureToCurriculum(LectureJpaEntity.from(lecture), curriculum);
     }
 }

@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LectureToCurriculum;
@@ -15,8 +15,12 @@ public interface LectureMapper {
 
     LectureMapper INSTANCE = Mappers.getMapper(LectureMapper.class);
 
+    Lecture toModel(LectureJpaEntity lectureJpaEntity);
+
+    LectureJpaEntity from(Lecture lecture);
+
     @Mapping(source = "lectureToCurriculumList", target = "curriculums")
-    LectureInfoDTO toLectureInfo(Lecture lecture);
+    LectureInfoDTO toLectureInfo(LectureJpaEntity lectureJpaEntity);
 
     @Mapping(source = "curriculum", target = ".")
     @Mapping(source = "curriculum.lecturer", target = ".")
@@ -28,8 +32,7 @@ public interface LectureMapper {
 
     LectureInfoDTO.StudyDTO toStudyInfo(Study study);
 
-    @Mapping(source = "lectureToCurriculumList", target = "curriculums")
-    LectureModifyInfoDTO toLectureModifyInfo(Lecture lecture);
+    LectureModifyInfoDTO toLectureModifyInfo(LectureInfoDTO lectureInfoDTO);
 
     @Mapping(source = "curriculum", target = ".")
     @Mapping(source = "curriculum.lecturer", target = ".")

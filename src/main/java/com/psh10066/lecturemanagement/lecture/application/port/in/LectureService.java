@@ -1,7 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.application.port.in;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
@@ -14,9 +13,9 @@ import java.util.List;
 
 public interface LectureService {
 
-    List<LectureListDTO> lectureList(User user);
+    List<Lecture> lectureList(User user);
 
-    List<LectureListDTO> lectureList(User user, LecturesRequest request);
+    List<Lecture> lectureList(User user, LecturesRequest request);
 
     LectureInfoDTO lectureInfo(Long lectureId);
 
