@@ -1,5 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.SectionRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Section;
 import lombok.RequiredArgsConstructor;

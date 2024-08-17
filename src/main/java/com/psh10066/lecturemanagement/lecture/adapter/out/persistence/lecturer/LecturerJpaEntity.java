@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
 import com.psh10066.lecturemanagement.lecture.domain.Lecturer;

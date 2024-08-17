@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture;
 
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureJpaEntity.lectureJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.QLectureJpaEntity.lectureJpaEntity;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study;
 
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;

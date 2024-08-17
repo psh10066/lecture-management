@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture;
 
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import org.mapstruct.Mapper;

@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study;
 
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
@@ -15,12 +15,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QCurriculumJpaEntity.curriculumJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureJpaEntity.lectureJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLecturerJpaEntity.lecturerJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QSectionJpaEntity.sectionJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QStudyJpaEntity.studyJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.QCurriculumJpaEntity.curriculumJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.QLectureJpaEntity.lectureJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.QLecturerJpaEntity.lecturerJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.QSectionJpaEntity.sectionJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.QStudyJpaEntity.studyJpaEntity;
 
 @Repository
 @RequiredArgsConstructor

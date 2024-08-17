@@ -1,9 +1,7 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum;
 
 import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
-import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LectureToCurriculum;
-import com.psh10066.lecturemanagement.lecture.domain.Section;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,8 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LecturerRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;

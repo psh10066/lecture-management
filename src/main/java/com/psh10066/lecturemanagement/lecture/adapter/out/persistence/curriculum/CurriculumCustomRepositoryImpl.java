@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
+package com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum;
 
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import com.querydsl.core.types.Projections;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QCurriculumJpaEntity.curriculumJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.QCurriculumJpaEntity.curriculumJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
 
 @Repository
 @RequiredArgsConstructor

@@ -1,5 +1,15 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumCustomRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureCustomRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.LecturerJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.LecturerJpaRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
