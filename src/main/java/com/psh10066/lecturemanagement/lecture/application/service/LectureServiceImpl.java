@@ -1,14 +1,13 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
 import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.LectureMapper;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.*;
 import com.psh10066.lecturemanagement.lecture.domain.*;
 import com.psh10066.lecturemanagement.user.domain.User;
@@ -52,8 +51,7 @@ public class LectureServiceImpl implements LectureService {
 
     @Transactional(readOnly = true)
     public LectureModifyInfoDTO lectureModifyInfo(Long lectureId) {
-        LectureInfoDTO lectureInfoDTO = lectureRepository.findFetchByLectureInfo(lectureId);
-        return LectureMapper.INSTANCE.toLectureModifyInfo(lectureInfoDTO);
+        return lectureRepository.findFetchByLectureModifyInfo(lectureId);
     }
 
     @Transactional
@@ -105,7 +103,7 @@ public class LectureServiceImpl implements LectureService {
     public Lecture registerInflearnLecture(User user, RegisterInflearnLectureRequest request) {
         String prefix = "https://www.inflearn.com/course/";
         if (!request.lecturePath().startsWith(prefix)) {
-            throw new RuntimeException("잘못된 강의 경로입니다.");
+            throw new IllegalArgumentException("잘못된 강의 경로입니다.");
         }
 
         String lecturePath = URLDecoder.decode(prefix + request.lecturePath().substring(prefix.length()).split("/")[0].split("\\?")[0].split("#")[0], StandardCharsets.UTF_8);
@@ -113,12 +111,12 @@ public class LectureServiceImpl implements LectureService {
         try {
             baseDoc = Jsoup.connect(lecturePath).get();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException(e);
         }
 
         Elements sections = baseDoc.getElementsByClass("cd-accordion__section-cover");
         if (sections.isEmpty()) {
-            throw new RuntimeException("잘못된 강의 경로입니다.");
+            throw new IllegalArgumentException("잘못된 강의 경로입니다.");
         }
 
         String lectureName = baseDoc.getElementsByClass("cd-header__title").getFirst().ownText();

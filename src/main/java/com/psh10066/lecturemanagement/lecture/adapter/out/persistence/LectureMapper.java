@@ -1,7 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LectureToCurriculum;
 import com.psh10066.lecturemanagement.lecture.domain.Section;

@@ -1,5 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.application.port.out;
 
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
@@ -16,4 +17,6 @@ public interface LectureRepository {
     List<Lecture> findAllLecture(User user, String s, LecturePlatform lecturePlatform);
 
     LectureInfoDTO findFetchByLectureInfo(Long lectureId);
+
+    LectureModifyInfoDTO findFetchByLectureModifyInfo(Long lectureId);
 }

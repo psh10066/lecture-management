@@ -1,4 +1,4 @@
-package com.psh10066.lecturemanagement.lecture.adapter.in.web.dto;
+package com.psh10066.lecturemanagement.lecture.application.port.in.dto;
 
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 

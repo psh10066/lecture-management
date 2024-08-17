@@ -1,7 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.application.port.in;
 
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.LectureModifyInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;

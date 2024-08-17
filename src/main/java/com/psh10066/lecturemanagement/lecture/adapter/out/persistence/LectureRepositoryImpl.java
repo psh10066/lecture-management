@@ -1,5 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
@@ -37,5 +38,11 @@ public class LectureRepositoryImpl implements LectureRepository {
     @Override
     public LectureInfoDTO findFetchByLectureInfo(Long lectureId) {
         return lectureCustomRepository.findFetchByLectureInfo(lectureId);
+    }
+
+    @Override
+    public LectureModifyInfoDTO findFetchByLectureModifyInfo(Long lectureId) {
+        LectureInfoDTO lectureInfo = lectureCustomRepository.findFetchByLectureInfo(lectureId);
+        return LectureMapper.INSTANCE.toLectureModifyInfo(lectureInfo);
     }
 }
