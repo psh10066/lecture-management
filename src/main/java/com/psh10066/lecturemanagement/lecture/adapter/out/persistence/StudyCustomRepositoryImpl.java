@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureJpaEntity.lectureJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLecturerJpaEntity.lecturerJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.domain.QCurriculum.curriculum;
 import static com.psh10066.lecturemanagement.lecture.domain.QLectureToCurriculum.lectureToCurriculum;
-import static com.psh10066.lecturemanagement.lecture.domain.QLecturer.lecturer;
 import static com.psh10066.lecturemanagement.lecture.domain.QSection.section;
 import static com.psh10066.lecturemanagement.lecture.domain.QStudy.study;
 
@@ -36,21 +36,21 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
                 lectureJpaEntity.lectureName,
                 lectureJpaEntity.lecturePlatform,
                 lectureJpaEntity.lecturePath,
-                lecturer.lecturerName,
+                lecturerJpaEntity.lecturerName,
                 section.sectionName,
                 study.studyName
             ))
             .from(lectureJpaEntity)
             .join(lectureToCurriculum).on(lectureJpaEntity.lectureId.eq(lectureToCurriculum.lectureJpaEntity.lectureId))
             .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
-            .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
+            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculum.lecturerJpaEntity.lecturerId))
             .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
                 lectureJpaEntity.userId.eq(user.getUserId()),
                 lecturePlatform != null ? lectureJpaEntity.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lectureJpaEntity.lectureId.eq(lectureId) : null,
-                StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
+                StringUtils.isNotBlank(lecturerName) ? lecturerJpaEntity.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
             )
             .offset(pageable.getOffset())
@@ -61,14 +61,14 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
             .from(lectureJpaEntity)
             .join(lectureToCurriculum).on(lectureJpaEntity.lectureId.eq(lectureToCurriculum.lectureJpaEntity.lectureId))
             .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
-            .leftJoin(lecturer).on(lecturer.lecturerId.eq(curriculum.lecturer.lecturerId))
+            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculum.lecturerJpaEntity.lecturerId))
             .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
             .join(study).on(study.section.sectionId.eq(section.sectionId))
             .where(
                 lectureJpaEntity.userId.eq(user.getUserId()),
                 lecturePlatform != null ? lectureJpaEntity.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lectureJpaEntity.lectureId.eq(lectureId) : null,
-                StringUtils.isNotBlank(lecturerName) ? lecturer.lecturerName.contains(lecturerName) : null,
+                StringUtils.isNotBlank(lecturerName) ? lecturerJpaEntity.lecturerName.contains(lecturerName) : null,
                 StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
             );
 

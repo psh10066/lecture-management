@@ -13,9 +13,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureJpaEntity.lectureJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLecturerJpaEntity.lecturerJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.domain.QCurriculum.curriculum;
 import static com.psh10066.lecturemanagement.lecture.domain.QLectureToCurriculum.lectureToCurriculum;
-import static com.psh10066.lecturemanagement.lecture.domain.QLecturer.lecturer;
 
 @Repository
 @RequiredArgsConstructor
@@ -47,7 +47,7 @@ public class LectureCustomRepositoryImpl implements LectureCustomRepository {
             .from(lectureJpaEntity)
             .join(lectureJpaEntity.lectureToCurriculumList, lectureToCurriculum).fetchJoin()
             .join(lectureToCurriculum.curriculum, curriculum).fetchJoin()
-            .leftJoin(curriculum.lecturer, lecturer).fetchJoin()
+            .leftJoin(curriculum.lecturerJpaEntity, lecturerJpaEntity).fetchJoin()
             .where(lectureJpaEntity.lectureId.eq(lectureId))
             .fetchOne();
         return result != null ? LectureMapper.INSTANCE.toLectureInfo(result) : null;

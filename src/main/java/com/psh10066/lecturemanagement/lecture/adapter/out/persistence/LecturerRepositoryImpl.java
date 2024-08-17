@@ -16,11 +16,11 @@ public class LecturerRepositoryImpl implements LecturerRepository {
 
     @Override
     public Optional<Lecturer> findByLecturerNameAndUser(String lecturerName, User user) {
-        return lecturerJpaRepository.findByLecturerNameAndUser(lecturerName, user);
+        return lecturerJpaRepository.findByLecturerNameAndUserId(lecturerName, user.getUserId()).map(LecturerJpaEntity::toModel);
     }
 
     @Override
     public Lecturer save(Lecturer lecturer) {
-        return lecturerJpaRepository.save(lecturer);
+        return lecturerJpaRepository.save(LecturerJpaEntity.from(lecturer)).toModel();
     }
 }

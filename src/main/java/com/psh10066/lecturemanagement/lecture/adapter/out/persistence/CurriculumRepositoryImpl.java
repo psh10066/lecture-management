@@ -2,6 +2,7 @@ package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
+import com.psh10066.lecturemanagement.lecture.application.port.out.LecturerRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import com.psh10066.lecturemanagement.lecture.domain.Lecturer;
 import com.psh10066.lecturemanagement.user.domain.User;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class CurriculumRepositoryImpl implements CurriculumRepository {
 
     private final CurriculumJpaRepository curriculumJpaRepository;
-    private final LecturerJpaRepository lecturerJpaRepository;
+    private final LecturerRepository lecturerRepository;
 
     @Override
     public Curriculum save(Curriculum curriculum) {
@@ -39,8 +40,8 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
 
         curriculumList.forEach(curriculum -> {
             String newLecturerName = lecturerMap.get(curriculum.getCurriculumId());
-            if (curriculum.getLecturer() == null || !curriculum.getCurriculumName().equals(newLecturerName)) {
-                curriculum.updateCurriculum(lecturerJpaRepository.save(Lecturer.createLecturer(newLecturerName, user)));
+            if (curriculum.getLecturerJpaEntity() == null || !curriculum.getCurriculumName().equals(newLecturerName)) {
+                curriculum.updateCurriculum(lecturerRepository.save(Lecturer.createLecturer(newLecturerName, user.getUserId())));
             }
         });
     }

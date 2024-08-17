@@ -23,7 +23,7 @@ public interface LectureMapper {
     LectureInfoDTO toLectureInfo(LectureJpaEntity lectureJpaEntity);
 
     @Mapping(source = "curriculum", target = ".")
-    @Mapping(source = "curriculum.lecturer", target = ".")
+    @Mapping(source = "curriculum.lecturerJpaEntity", target = ".")
     @Mapping(source = "curriculum.sectionList", target = "sections")
     LectureInfoDTO.CurriculumDTO toCurriculumInfo(LectureToCurriculum lectureToCurriculum);
 
@@ -35,6 +35,6 @@ public interface LectureMapper {
     LectureModifyInfoDTO toLectureModifyInfo(LectureInfoDTO lectureInfoDTO);
 
     @Mapping(source = "curriculum", target = ".")
-    @Mapping(source = "curriculum.lecturer", target = ".")
+    @Mapping(source = "curriculum.lecturerJpaEntity", target = ".")
     LectureModifyInfoDTO.CurriculumDTO toCurriculumModifyInfo(LectureToCurriculum lectureToCurriculum);
 }

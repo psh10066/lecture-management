@@ -1,13 +1,13 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
 import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.*;
 import com.psh10066.lecturemanagement.lecture.domain.*;
 import com.psh10066.lecturemanagement.user.domain.User;
@@ -124,7 +124,7 @@ public class LectureServiceImpl implements LectureService {
 
         Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user.getUserId()));
         Lecturer lecturer = lecturerRepository.findByLecturerNameAndUser(lecturerName, user)
-            .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName, user)));
+            .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName, user.getUserId())));
         Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer));
         lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
 
