@@ -13,6 +13,6 @@ public class SectionRepositoryImpl implements SectionRepository {
 
     @Override
     public Section save(Section section) {
-        return sectionJpaRepository.save(section);
+        return sectionJpaRepository.save(SectionJpaEntity.from(section)).toModel();
     }
 }

@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.application.port.out;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.StudyListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 import com.psh10066.lecturemanagement.lecture.domain.Study;
 import com.psh10066.lecturemanagement.user.domain.User;

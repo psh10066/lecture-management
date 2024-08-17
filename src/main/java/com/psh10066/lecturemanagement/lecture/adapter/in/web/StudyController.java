@@ -1,7 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.adapter.in.web;
 
 import com.psh10066.lecturemanagement.jpaclient.paging.PagingMaker;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.StudyListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.StudiesRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
 import com.psh10066.lecturemanagement.lecture.application.port.in.StudyService;

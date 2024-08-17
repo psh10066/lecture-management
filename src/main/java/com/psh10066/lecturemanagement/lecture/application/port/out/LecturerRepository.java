@@ -9,5 +9,7 @@ public interface LecturerRepository {
 
     Optional<Lecturer> findByLecturerNameAndUser(String lecturerName, User user);
 
+    Lecturer getById(Long id);
+
     Lecturer save(Lecturer lecturer);
 }

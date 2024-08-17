@@ -13,6 +13,6 @@ public class LectureToCurriculumRepositoryImpl implements LectureToCurriculumRep
 
     @Override
     public LectureToCurriculum save(LectureToCurriculum lectureToCurriculum) {
-        return lectureToCurriculumJpaRepository.save(lectureToCurriculum);
+        return lectureToCurriculumJpaRepository.save(LectureToCurriculumJpaEntity.from(lectureToCurriculum)).toModel();
     }
 }

@@ -25,7 +25,7 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
 
     @Override
     public Curriculum save(Curriculum curriculum) {
-        return curriculumJpaRepository.save(curriculum);
+        return curriculumJpaRepository.save(CurriculumJpaEntity.from(curriculum)).toModel();
     }
 
     @Override
@@ -36,12 +36,15 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
                 ModifyLectureRequest.InnerDTO::getLecturerName
             ));
         Set<Long> curriculumIds = lecturerMap.keySet();
-        List<Curriculum> curriculumList = curriculumJpaRepository.findAllById(curriculumIds);
+        List<Curriculum> curriculumJpaEntityList = curriculumJpaRepository.findAllById(curriculumIds).stream()
+            .map(CurriculumJpaEntity::toModel)
+            .toList();
 
-        curriculumList.forEach(curriculum -> {
-            String newLecturerName = lecturerMap.get(curriculum.getCurriculumId());
-            if (curriculum.getLecturerJpaEntity() == null || !curriculum.getCurriculumName().equals(newLecturerName)) {
-                curriculum.updateCurriculum(lecturerRepository.save(Lecturer.createLecturer(newLecturerName, user.getUserId())));
+        curriculumJpaEntityList.forEach(curriculum -> {
+            String newLecturerName = lecturerMap.get(curriculum.curriculumId());
+            if (curriculum.lecturerId() == null || !lecturerRepository.getById(curriculum.lecturerId()).lecturerName().equals(newLecturerName)) {
+                Curriculum newCurriculum = curriculum.updateCurriculum(lecturerRepository.save(Lecturer.createLecturer(newLecturerName, user.getUserId())).lecturerId());
+                curriculumJpaRepository.save(CurriculumJpaEntity.from(newCurriculum));
             }
         });
     }

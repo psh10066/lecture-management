@@ -1,8 +1,7 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.StudyListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
-import com.psh10066.lecturemanagement.user.adapter.out.persistence.UserJpaEntity;
 import com.psh10066.lecturemanagement.user.domain.User;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -16,12 +15,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QCurriculumJpaEntity.curriculumJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureJpaEntity.lectureJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QLecturerJpaEntity.lecturerJpaEntity;
-import static com.psh10066.lecturemanagement.lecture.domain.QCurriculum.curriculum;
-import static com.psh10066.lecturemanagement.lecture.domain.QLectureToCurriculum.lectureToCurriculum;
-import static com.psh10066.lecturemanagement.lecture.domain.QSection.section;
-import static com.psh10066.lecturemanagement.lecture.domain.QStudy.study;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QSectionJpaEntity.sectionJpaEntity;
+import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.QStudyJpaEntity.studyJpaEntity;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,21 +36,21 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
                 lectureJpaEntity.lecturePlatform,
                 lectureJpaEntity.lecturePath,
                 lecturerJpaEntity.lecturerName,
-                section.sectionName,
-                study.studyName
+                sectionJpaEntity.sectionName,
+                studyJpaEntity.studyName
             ))
             .from(lectureJpaEntity)
-            .join(lectureToCurriculum).on(lectureJpaEntity.lectureId.eq(lectureToCurriculum.lectureJpaEntity.lectureId))
-            .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
-            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculum.lecturerJpaEntity.lecturerId))
-            .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
-            .join(study).on(study.section.sectionId.eq(section.sectionId))
+            .join(lectureToCurriculumJpaEntity).on(lectureJpaEntity.lectureId.eq(lectureToCurriculumJpaEntity.lectureId))
+            .join(curriculumJpaEntity).on(curriculumJpaEntity.curriculumId.eq(lectureToCurriculumJpaEntity.curriculumId))
+            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculumJpaEntity.lecturerId))
+            .join(sectionJpaEntity).on(sectionJpaEntity.curriculumId.eq(curriculumJpaEntity.curriculumId))
+            .join(studyJpaEntity).on(studyJpaEntity.sectionId.eq(sectionJpaEntity.sectionId))
             .where(
                 lectureJpaEntity.userId.eq(user.getUserId()),
                 lecturePlatform != null ? lectureJpaEntity.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lectureJpaEntity.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturerJpaEntity.lecturerName.contains(lecturerName) : null,
-                StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
+                StringUtils.isNotBlank(studyName) ? studyJpaEntity.studyName.contains(studyName) : null
             )
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize())
@@ -59,17 +58,17 @@ public class StudyCustomRepositoryImpl implements StudyCustomRepository {
 
         JPAQuery<Long> count = queryFactory.select(lectureJpaEntity.count())
             .from(lectureJpaEntity)
-            .join(lectureToCurriculum).on(lectureJpaEntity.lectureId.eq(lectureToCurriculum.lectureJpaEntity.lectureId))
-            .join(curriculum).on(curriculum.curriculumId.eq(lectureToCurriculum.curriculum.curriculumId))
-            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculum.lecturerJpaEntity.lecturerId))
-            .join(section).on(section.curriculum.curriculumId.eq(curriculum.curriculumId))
-            .join(study).on(study.section.sectionId.eq(section.sectionId))
+            .join(lectureToCurriculumJpaEntity).on(lectureJpaEntity.lectureId.eq(lectureToCurriculumJpaEntity.lectureId))
+            .join(curriculumJpaEntity).on(curriculumJpaEntity.curriculumId.eq(lectureToCurriculumJpaEntity.curriculumId))
+            .leftJoin(lecturerJpaEntity).on(lecturerJpaEntity.lecturerId.eq(curriculumJpaEntity.lecturerId))
+            .join(sectionJpaEntity).on(sectionJpaEntity.curriculumId.eq(curriculumJpaEntity.curriculumId))
+            .join(studyJpaEntity).on(studyJpaEntity.sectionId.eq(sectionJpaEntity.sectionId))
             .where(
                 lectureJpaEntity.userId.eq(user.getUserId()),
                 lecturePlatform != null ? lectureJpaEntity.lecturePlatform.eq(lecturePlatform) : null,
                 lectureId != null ? lectureJpaEntity.lectureId.eq(lectureId) : null,
                 StringUtils.isNotBlank(lecturerName) ? lecturerJpaEntity.lecturerName.contains(lecturerName) : null,
-                StringUtils.isNotBlank(studyName) ? study.studyName.contains(studyName) : null
+                StringUtils.isNotBlank(studyName) ? studyJpaEntity.studyName.contains(studyName) : null
             );
 
         return PageableExecutionUtils.getPage(fetch, pageable, count::fetchOne);

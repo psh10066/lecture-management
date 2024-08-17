@@ -46,7 +46,7 @@ public class LectureServiceImpl implements LectureService {
 
     @Transactional(readOnly = true)
     public LectureInfoDTO lectureInfo(Long lectureId) {
-        return lectureRepository.findFetchByLectureInfo(lectureId);
+        return lectureRepository.findByLectureInfo(lectureId);
     }
 
     @Transactional(readOnly = true)
@@ -76,7 +76,7 @@ public class LectureServiceImpl implements LectureService {
             try {
                 Long.parseLong(s); // curriculum 체크용
                 curriculum = curriculumRepository.save(Curriculum.createCurriculum(split[i + 1], null));
-                lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
+                lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture.lectureId(), curriculum.curriculumId()));
                 i += 5;
                 section = null;
                 continue;
@@ -85,15 +85,15 @@ public class LectureServiceImpl implements LectureService {
 
             // section
             if (StringUtils.isBlank(split[i + 1])) {
-                section = sectionRepository.save(Section.createSection(s, curriculum));
+                section = sectionRepository.save(Section.createSection(s, curriculum.curriculumId()));
                 i += 2;
                 continue;
             } else if (section == null) {
-                section = sectionRepository.save(Section.createSection(curriculum.getCurriculumName(), curriculum));
+                section = sectionRepository.save(Section.createSection(s, curriculum.curriculumId()));
             }
 
             // study
-            studyRepository.save(Study.createStudy(s, DateTimeUtil.parseTime(split[i + 1]), section));
+            studyRepository.save(Study.createStudy(s, DateTimeUtil.parseTime(split[i + 1]), section.sectionId()));
             i++;
         }
         return lecture;
@@ -125,19 +125,19 @@ public class LectureServiceImpl implements LectureService {
         Lecture lecture = lectureRepository.save(Lecture.createLecture(lectureName, LecturePlatform.INFLEARN, lecturePath + "/dashboard", user.getUserId()));
         Lecturer lecturer = lecturerRepository.findByLecturerNameAndUser(lecturerName, user)
             .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(lecturerName, user.getUserId())));
-        Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer));
-        lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture, curriculum));
+        Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(lectureName, lecturer.lecturerId()));
+        lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture.lectureId(), curriculum.curriculumId()));
 
         for (Element sectionElement : sections) {
             String sectionName = sectionElement.getElementsByClass("cd-accordion__section-title").getFirst().text();
-            Section section = sectionRepository.save(Section.createSection(sectionName, curriculum));
+            Section section = sectionRepository.save(Section.createSection(sectionName, curriculum.curriculumId()));
 
             Elements studies = sectionElement.getElementsByClass("cd-accordion__unit");
             for (Element studyElement : studies) {
                 String studyName = studyElement.getElementsByClass("ac-accordion__unit-title").getFirst().text();
                 Element studyTimeElement = studyElement.getElementsByClass("ac-accordion__unit-info--time").first();
                 String studyTime = studyTimeElement != null ? studyTimeElement.text() : null;
-                studyRepository.save(Study.createStudy(studyName, DateTimeUtil.parseTime(studyTime), section));
+                studyRepository.save(Study.createStudy(studyName, DateTimeUtil.parseTime(studyTime), section.sectionId()));
             }
         }
         return lecture;

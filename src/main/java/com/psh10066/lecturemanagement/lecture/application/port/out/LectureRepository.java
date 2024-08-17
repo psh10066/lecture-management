@@ -16,7 +16,7 @@ public interface LectureRepository {
 
     List<Lecture> findAllLecture(User user, String s, LecturePlatform lecturePlatform);
 
-    LectureInfoDTO findFetchByLectureInfo(Long lectureId);
+    LectureInfoDTO findByLectureInfo(Long lectureId);
 
     LectureModifyInfoDTO findFetchByLectureModifyInfo(Long lectureId);
 }

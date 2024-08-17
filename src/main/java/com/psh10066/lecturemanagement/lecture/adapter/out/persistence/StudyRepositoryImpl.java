@@ -1,6 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.dto.StudyListDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.StudyRepository;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 import com.psh10066.lecturemanagement.lecture.domain.Study;
@@ -19,7 +19,7 @@ public class StudyRepositoryImpl implements StudyRepository {
 
     @Override
     public Study save(Study study) {
-        return studyJpaRepository.save(study);
+        return studyJpaRepository.save(StudyJpaEntity.from(study)).toModel();
     }
 
     @Override
