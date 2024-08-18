@@ -22,6 +22,7 @@ public record LectureInfoDTO(
 
     public record SectionDTO(
         Long sectionId,
+        Long curriculumId,
         String sectionName,
         List<StudyDTO> studies
     ) {
@@ -29,6 +30,7 @@ public record LectureInfoDTO(
 
     public record StudyDTO(
         Long studyId,
+        Long sectionId,
         String studyName,
         LocalTime studyTime
     ) {

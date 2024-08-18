@@ -2,10 +2,13 @@ package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.dto.CurriculumDetailDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.LectureToCurriculumJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.LectureToCurriculumJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LecturerRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.SectionRepository;
@@ -28,8 +31,8 @@ import java.util.stream.Collectors;
 public class CurriculumRepositoryImpl implements CurriculumRepository {
 
     private final CurriculumJpaRepository curriculumJpaRepository;
-    private final LecturerRepository lecturerRepository;
     private final LectureToCurriculumJpaRepository lectureToCurriculumJpaRepository;
+    private final LecturerRepository lecturerRepository;
     private final SectionRepository sectionRepository;
 
     @Override
@@ -44,12 +47,13 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
                 ModifyLectureCommand.InnerDTO::curriculumId,
                 ModifyLectureCommand.InnerDTO::lecturerName
             ));
+
         Set<Long> curriculumIds = lecturerMap.keySet();
-        List<Curriculum> curriculumJpaEntityList = curriculumJpaRepository.findAllById(curriculumIds).stream()
+        List<Curriculum> curriculumList = curriculumJpaRepository.findAllById(curriculumIds).stream()
             .map(CurriculumJpaEntity::toModel)
             .toList();
 
-        curriculumJpaEntityList.forEach(curriculum -> {
+        curriculumList.forEach(curriculum -> {
             String newLecturerName = lecturerMap.get(curriculum.curriculumId());
 
             Lecturer lecturer = lecturerRepository.findOrRegister(newLecturerName, user);
@@ -77,5 +81,37 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
         );
 
         return curriculum;
+    }
+
+    @Override
+    public List<LectureInfoDTO.CurriculumDTO> findInfoByLectureId(Long lectureId) {
+        List<CurriculumDetailDTO> curriculumList = curriculumJpaRepository.findAllByLectureId(lectureId);
+
+        List<Long> curriculumIds = curriculumList.stream()
+            .map(CurriculumDetailDTO::curriculumId)
+            .toList();
+        List<LectureInfoDTO.SectionDTO> sectionList = sectionRepository.findInfoByCurriculumIdIn(curriculumIds);
+
+        return curriculumList.stream()
+            .map(curriculum -> new LectureInfoDTO.CurriculumDTO(
+                curriculum.curriculumId(),
+                curriculum.curriculumName(),
+                curriculum.lecturerName(),
+                sectionList.stream()
+                    .filter(sectionDTO -> sectionDTO.curriculumId().equals(curriculum.curriculumId()))
+                    .toList()
+            ))
+            .toList();
+    }
+
+    @Override
+    public List<LectureModifyInfoDTO.CurriculumDTO> findModifyInfoByLectureId(Long lectureId) {
+        return curriculumJpaRepository.findAllByLectureId(lectureId).stream()
+            .map(curriculumDetailDTO -> new LectureModifyInfoDTO.CurriculumDTO(
+                curriculumDetailDTO.curriculumId(),
+                curriculumDetailDTO.curriculumName(),
+                curriculumDetailDTO.lecturerName()
+            ))
+            .toList();
     }
 }

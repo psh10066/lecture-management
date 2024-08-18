@@ -7,8 +7,10 @@ import com.psh10066.lecturemanagement.lecture.domain.Lecturer;
 import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class LecturerRepositoryImpl implements LecturerRepository {
 

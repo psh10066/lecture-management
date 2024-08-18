@@ -1,38 +1,28 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaRepository;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.LecturerJpaEntity;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.LecturerJpaRepository;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaEntity;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.SectionJpaRepository;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaEntity;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
-import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 import com.psh10066.lecturemanagement.user.domain.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class LectureRepositoryImpl implements LectureRepository {
 
     private final LectureJpaRepository lectureJpaRepository;
-    private final CurriculumJpaRepository curriculumJpaRepository;
-    private final SectionJpaRepository sectionJpaRepository;
-    private final StudyJpaRepository studyJpaRepository;
-    private final LecturerJpaRepository lecturerJpaRepository;
+    private final CurriculumRepository curriculumRepository;
 
     @Override
     public List<Lecture> findAllByUser(User user) {
@@ -53,90 +43,33 @@ public class LectureRepositoryImpl implements LectureRepository {
 
     @Override
     public LectureInfoDTO findByLectureInfo(Long lectureId) {
-        Lecture lecture = lectureJpaRepository.findById(lectureId)
-            .orElseThrow(EntityNotFoundException::new)
-            .toModel();
+        LectureJpaEntity lectureJpaEntity = lectureJpaRepository.findById(lectureId)
+            .orElseThrow(EntityNotFoundException::new);
 
-        List<Curriculum> curriculumList = curriculumJpaRepository.findAllByLectureId(lectureId);
-        List<Long> curriculumIds = curriculumList.stream()
-            .map(Curriculum::curriculumId)
-            .toList();
-        List<Long> lecturerIds = curriculumList.stream()
-            .map(Curriculum::lecturerId)
-            .toList();
-
-        Map<Long, String> lecturerNameMap = lecturerJpaRepository.findAllByLecturerIdIn(lecturerIds).stream()
-            .collect(Collectors.toMap(
-                LecturerJpaEntity::getLecturerId,
-                LecturerJpaEntity::getLecturerName
-            ));
-
-        List<SectionJpaEntity> sectionList = sectionJpaRepository.findAllByCurriculumIdIn(curriculumIds);
-        List<Long> sectionIds = sectionList.stream()
-            .map(SectionJpaEntity::getSectionId)
-            .toList();
-
-        List<StudyJpaEntity> studyList = studyJpaRepository.findAllBySectionIdIn(sectionIds);
+        List<LectureInfoDTO.CurriculumDTO> curriculumList = curriculumRepository.findInfoByLectureId(lectureId);
 
         return new LectureInfoDTO(
             lectureId,
-            lecture.lectureName(),
-            lecture.lecturePlatform(),
-            lecture.lecturePath(),
-            curriculumList.stream()
-                .map(curriculum -> new LectureInfoDTO.CurriculumDTO(
-                    curriculum.curriculumId(),
-                    curriculum.curriculumName(),
-                    lecturerNameMap.get(curriculum.lecturerId()),
-                    sectionList.stream()
-                        .filter(sectionJpaEntity -> sectionJpaEntity.getCurriculumId().equals(curriculum.curriculumId()))
-                        .map(sectionJpaEntity -> new LectureInfoDTO.SectionDTO(
-                            sectionJpaEntity.getSectionId(),
-                            sectionJpaEntity.getSectionName(),
-                            studyList.stream()
-                                .filter(studyJpaEntity -> studyJpaEntity.getSectionId().equals(sectionJpaEntity.getSectionId()))
-                                .map(studyJpaEntity -> new LectureInfoDTO.StudyDTO(
-                                    studyJpaEntity.getStudyId(),
-                                    studyJpaEntity.getStudyName(),
-                                    studyJpaEntity.getStudyTime()
-                                ))
-                                .toList()
-                        ))
-                        .toList()
-                ))
-                .toList()
+            lectureJpaEntity.getLectureName(),
+            lectureJpaEntity.getLecturePlatform(),
+            lectureJpaEntity.getLecturePath(),
+            curriculumList
         );
     }
 
     @Override
     public LectureModifyInfoDTO findByLectureModifyInfo(Long lectureId) {
-        Lecture lecture = lectureJpaRepository.findById(lectureId)
-            .orElseThrow(EntityNotFoundException::new)
-            .toModel();
+        LectureJpaEntity lectureJpaEntity = lectureJpaRepository.findById(lectureId)
+            .orElseThrow(EntityNotFoundException::new);
 
-        List<Curriculum> curriculumList = curriculumJpaRepository.findAllByLectureId(lectureId);
-        List<Long> lecturerIds = curriculumList.stream()
-            .map(Curriculum::lecturerId)
-            .toList();
-
-        Map<Long, String> lecturerNameMap = lecturerJpaRepository.findAllByLecturerIdIn(lecturerIds).stream()
-            .collect(Collectors.toMap(
-                LecturerJpaEntity::getLecturerId,
-                LecturerJpaEntity::getLecturerName
-            ));
+        List<LectureModifyInfoDTO.CurriculumDTO> curriculumList = curriculumRepository.findModifyInfoByLectureId(lectureId);
 
         return new LectureModifyInfoDTO(
             lectureId,
-            lecture.lectureName(),
-            lecture.lecturePlatform(),
-            lecture.lecturePath(),
-            curriculumList.stream()
-                .map(curriculum -> new LectureModifyInfoDTO.CurriculumDTO(
-                    curriculum.curriculumId(),
-                    curriculum.curriculumName(),
-                    lecturerNameMap.get(curriculum.lecturerId())
-                ))
-                .toList()
+            lectureJpaEntity.getLectureName(),
+            lectureJpaEntity.getLecturePlatform(),
+            lectureJpaEntity.getLecturePath(),
+            curriculumList
         );
     }
 }

@@ -31,17 +31,14 @@ public class LectureServiceImpl implements LectureService {
         return lectureRepository.findAllLecture(user, command.lectureName(), command.lecturePlatform());
     }
 
-    @Transactional(readOnly = true)
     public LectureInfoDTO lectureInfo(Long lectureId) {
         return lectureRepository.findByLectureInfo(lectureId);
     }
 
-    @Transactional(readOnly = true)
     public LectureModifyInfoDTO lectureModifyInfo(Long lectureId) {
         return lectureRepository.findByLectureModifyInfo(lectureId);
     }
 
-    @Transactional
     public void modifyLecture(User user, ModifyLectureCommand command) {
         curriculumRepository.updateLecturer(command, user);
     }
