@@ -18,5 +18,5 @@ public interface LectureRepository {
 
     LectureInfoDTO findByLectureInfo(Long lectureId);
 
-    LectureModifyInfoDTO findFetchByLectureModifyInfo(Long lectureId);
+    LectureModifyInfoDTO findByLectureModifyInfo(Long lectureId);
 }

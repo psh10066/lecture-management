@@ -111,7 +111,7 @@ public class LectureRepositoryImpl implements LectureRepository {
     }
 
     @Override
-    public LectureModifyInfoDTO findFetchByLectureModifyInfo(Long lectureId) {
+    public LectureModifyInfoDTO findByLectureModifyInfo(Long lectureId) {
         Lecture lecture = lectureJpaRepository.findById(lectureId)
             .orElseThrow(EntityNotFoundException::new)
             .toModel();

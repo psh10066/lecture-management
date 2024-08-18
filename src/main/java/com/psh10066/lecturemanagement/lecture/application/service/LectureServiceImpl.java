@@ -42,7 +42,7 @@ public class LectureServiceImpl implements LectureService {
 
     @Transactional(readOnly = true)
     public LectureModifyInfoDTO lectureModifyInfo(Long lectureId) {
-        return lectureRepository.findFetchByLectureModifyInfo(lectureId);
+        return lectureRepository.findByLectureModifyInfo(lectureId);
     }
 
     @Transactional
