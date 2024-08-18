@@ -6,10 +6,10 @@ import com.psh10066.lecturemanagement.lecture.application.port.in.command.Modify
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
-import com.psh10066.lecturemanagement.lecture.application.port.out.*;
-import com.psh10066.lecturemanagement.lecture.domain.*;
+import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
+import com.psh10066.lecturemanagement.lecture.application.port.out.LectureRepository;
+import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.user.domain.User;
-import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +22,6 @@ public class LectureServiceImpl implements LectureService {
 
     private final LectureRepository lectureRepository;
     private final CurriculumRepository curriculumRepository;
-    private final LectureToCurriculumRepository lectureToCurriculumRepository;
-    private final SectionRepository sectionRepository;
-    private final StudyRepository studyRepository;
-    private final LecturerRepository lecturerRepository;
 
     public List<Lecture> lectureList(User user) {
         return lectureRepository.findAllByUser(user);
@@ -54,25 +50,9 @@ public class LectureServiceImpl implements LectureService {
     public Lecture registerLecture(User user, RegisterLectureCommand command) {
         Lecture lecture = lectureRepository.save(Lecture.createLecture(command.lectureName(), command.lecturePlatform(), command.lecturePath(), user.getUserId()));
 
-        command.curriculumList().forEach(curriculumDTO -> {
-            Long lecturerId = null;
-            if (StringUtils.isNotBlank(curriculumDTO.lecturerName())) {
-                lecturerId = lecturerRepository.findByLecturerNameAndUser(curriculumDTO.lecturerName(), user)
-                    .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(curriculumDTO.lecturerName(), user.getUserId())))
-                    .lecturerId();
-            }
-
-            Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(curriculumDTO.curriculumName(), lecturerId));
-            lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture.lectureId(), curriculum.curriculumId()));
-
-            curriculumDTO.sectionList().forEach(sectionDTO -> {
-                Section section = sectionRepository.save(Section.createSection(sectionDTO.sectionName(), curriculum.curriculumId()));
-
-                sectionDTO.studyList().forEach(studyDTO ->
-                    studyRepository.save(Study.createStudy(studyDTO.studyName(), studyDTO.studyTime(), section.sectionId()))
-                );
-            });
-        });
+        command.curriculumList().forEach(curriculumDTO ->
+            curriculumRepository.register(user, lecture.lectureId(), curriculumDTO)
+        );
 
         return lecture;
     }

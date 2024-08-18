@@ -2,12 +2,17 @@ package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.LectureToCurriculumJpaEntity;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.LectureToCurriculumJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LecturerRepository;
+import com.psh10066.lecturemanagement.lecture.application.port.out.SectionRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import com.psh10066.lecturemanagement.lecture.domain.Lecturer;
 import com.psh10066.lecturemanagement.user.domain.User;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +29,8 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
 
     private final CurriculumJpaRepository curriculumJpaRepository;
     private final LecturerRepository lecturerRepository;
+    private final LectureToCurriculumJpaRepository lectureToCurriculumJpaRepository;
+    private final SectionRepository sectionRepository;
 
     @Override
     public Curriculum save(Curriculum curriculum) {
@@ -49,5 +56,27 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
                 curriculumJpaRepository.save(CurriculumJpaEntity.from(newCurriculum));
             }
         });
+    }
+
+    @Override
+    public Curriculum register(User user, Long lectureId, RegisterLectureCommand.CurriculumDTO curriculumDTO) {
+        Long lecturerId = null;
+        if (StringUtils.isNotBlank(curriculumDTO.lecturerName())) {
+            lecturerId = lecturerRepository.findByLecturerNameAndUser(curriculumDTO.lecturerName(), user)
+                .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(curriculumDTO.lecturerName(), user.getUserId())))
+                .lecturerId();
+        }
+
+        final Curriculum curriculum = curriculumJpaRepository.save(CurriculumJpaEntity.from(
+            Curriculum.createCurriculum(curriculumDTO.curriculumName(), lecturerId))
+        ).toModel();
+
+        lectureToCurriculumJpaRepository.save(new LectureToCurriculumJpaEntity(lectureId, curriculum.curriculumId()));
+
+        curriculumDTO.sectionList().forEach(sectionDTO ->
+            sectionRepository.register(curriculum.curriculumId(), sectionDTO)
+        );
+
+        return curriculum;
     }
 }
