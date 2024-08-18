@@ -4,6 +4,7 @@ import com.psh10066.lecturemanagement.jpaclient.AuditingFields;
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.Comment;
 @Getter
 @Entity(name = "curriculum")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class CurriculumJpaEntity extends AuditingFields {
 
     @Comment("커리큘럼 고유번호")

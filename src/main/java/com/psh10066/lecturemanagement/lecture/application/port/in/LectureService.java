@@ -1,9 +1,9 @@
 package com.psh10066.lecturemanagement.lecture.application.port.in;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.domain.Lecture;
@@ -23,7 +23,7 @@ public interface LectureService {
 
     void modifyLecture(User user, ModifyLectureCommand command);
 
-    Lecture registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request);
+    Lecture registerLecture(User user, RegisterLectureCommand command);
 
     Lecture registerInflearnLecture(User user, RegisterInflearnLectureRequest request);
 }

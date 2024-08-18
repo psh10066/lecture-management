@@ -1,11 +1,11 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
 import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.*;
@@ -60,42 +60,29 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Transactional
-    public Lecture registerFastcampusLecture(User user, RegisterFastcampusLectureRequest request) {
-        Lecture lecture = lectureRepository.save(Lecture.createLecture(request.lectureName(), LecturePlatform.FASTCAMPUS, request.lecturePath(), user.getUserId()));
-        String[] split = request.lectureInfo().split("\r\n");
-        Curriculum curriculum = null;
-        Section section = null;
+    public Lecture registerLecture(User user, RegisterLectureCommand command) {
+        Lecture lecture = lectureRepository.save(Lecture.createLecture(command.lectureName(), command.lecturePlatform(), command.lecturePath(), user.getUserId()));
 
-        for (int i = 0; i < split.length; i++) {
-            String s = split[i];
-            if (StringUtils.isBlank(s) || s.startsWith("미제출")) {
-                continue;
+        command.curriculumList().forEach(curriculumDTO -> {
+            Long lecturerId = null;
+            if (StringUtils.isNotBlank(curriculumDTO.lecturerName())) {
+                lecturerId = lecturerRepository.findByLecturerNameAndUser(curriculumDTO.lecturerName(), user)
+                    .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(curriculumDTO.lecturerName(), user.getUserId())))
+                    .lecturerId();
             }
 
-            // curriculum
-            try {
-                Long.parseLong(s); // curriculum 체크용
-                curriculum = curriculumRepository.save(Curriculum.createCurriculum(split[i + 1], null));
-                lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture.lectureId(), curriculum.curriculumId()));
-                i += 5;
-                section = null;
-                continue;
-            } catch (Exception ignored) {
-            }
+            Curriculum curriculum = curriculumRepository.save(Curriculum.createCurriculum(curriculumDTO.curriculumName(), lecturerId));
+            lectureToCurriculumRepository.save(LectureToCurriculum.createLectureToCurriculum(lecture.lectureId(), curriculum.curriculumId()));
 
-            // section
-            if (StringUtils.isBlank(split[i + 1])) {
-                section = sectionRepository.save(Section.createSection(s, curriculum.curriculumId()));
-                i += 2;
-                continue;
-            } else if (section == null) {
-                section = sectionRepository.save(Section.createSection(s, curriculum.curriculumId()));
-            }
+            curriculumDTO.sectionList().forEach(sectionDTO -> {
+                Section section = sectionRepository.save(Section.createSection(sectionDTO.sectionName(), curriculum.curriculumId()));
 
-            // study
-            studyRepository.save(Study.createStudy(s, DateTimeUtil.parseTime(split[i + 1]), section.sectionId()));
-            i++;
-        }
+                sectionDTO.studyList().forEach(studyDTO ->
+                    studyRepository.save(Study.createStudy(studyDTO.studyName(), studyDTO.studyTime(), section.sectionId()))
+                );
+            });
+        });
+
         return lecture;
     }
 
