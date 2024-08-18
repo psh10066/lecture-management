@@ -1,6 +1,5 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyCustomRepository;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.StudyJpaRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
@@ -19,11 +18,10 @@ import org.springframework.stereotype.Repository;
 public class StudyRepositoryImpl implements StudyRepository {
 
     private final StudyJpaRepository studyJpaRepository;
-    private final StudyCustomRepository studyCustomRepository;
 
     @Override
     public Page<StudyListDTO> findAllStudy(User user, Pageable pageable, LecturePlatform lecturePlatform, Long lectureId, String lecturerName, String studyName) {
-        return studyCustomRepository.findAllStudy(user, pageable, lecturePlatform, lectureId, lecturerName, studyName);
+        return studyJpaRepository.findAllStudy(user, pageable, lecturePlatform, lectureId, lecturerName, studyName);
     }
 
     @Override

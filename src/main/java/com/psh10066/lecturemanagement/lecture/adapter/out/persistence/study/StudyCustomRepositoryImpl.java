@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -22,7 +21,6 @@ import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lec
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.section.QSectionJpaEntity.sectionJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.study.QStudyJpaEntity.studyJpaEntity;
 
-@Repository
 @RequiredArgsConstructor
 public class StudyCustomRepositoryImpl implements StudyCustomRepository {
 

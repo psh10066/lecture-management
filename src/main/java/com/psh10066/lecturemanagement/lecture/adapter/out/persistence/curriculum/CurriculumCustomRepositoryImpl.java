@@ -4,14 +4,12 @@ import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.QCurriculumJpaEntity.curriculumJpaEntity;
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturetocurriculum.QLectureToCurriculumJpaEntity.lectureToCurriculumJpaEntity;
 
-@Repository
 @RequiredArgsConstructor
 public class CurriculumCustomRepositoryImpl implements CurriculumCustomRepository {
 

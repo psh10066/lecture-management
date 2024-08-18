@@ -7,13 +7,11 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.QLectureJpaEntity.lectureJpaEntity;
 
-@Repository
 @RequiredArgsConstructor
 public class LectureCustomRepositoryImpl implements LectureCustomRepository {
 

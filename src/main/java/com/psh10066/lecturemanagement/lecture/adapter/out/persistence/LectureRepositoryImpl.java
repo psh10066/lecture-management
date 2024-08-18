@@ -1,7 +1,6 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumCustomRepository;
-import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureCustomRepository;
+import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecture.LectureJpaRepository;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.lecturer.LecturerJpaEntity;
@@ -30,8 +29,7 @@ import java.util.stream.Collectors;
 public class LectureRepositoryImpl implements LectureRepository {
 
     private final LectureJpaRepository lectureJpaRepository;
-    private final LectureCustomRepository lectureCustomRepository;
-    private final CurriculumCustomRepository curriculumCustomRepository;
+    private final CurriculumJpaRepository curriculumJpaRepository;
     private final SectionJpaRepository sectionJpaRepository;
     private final StudyJpaRepository studyJpaRepository;
     private final LecturerJpaRepository lecturerJpaRepository;
@@ -50,7 +48,7 @@ public class LectureRepositoryImpl implements LectureRepository {
 
     @Override
     public List<Lecture> findAllLecture(User user, String lectureName, LecturePlatform lecturePlatform) {
-        return lectureCustomRepository.findAllLecture(user, lectureName, lecturePlatform);
+        return lectureJpaRepository.findAllLecture(user, lectureName, lecturePlatform);
     }
 
     @Override
@@ -59,7 +57,7 @@ public class LectureRepositoryImpl implements LectureRepository {
             .orElseThrow(EntityNotFoundException::new)
             .toModel();
 
-        List<Curriculum> curriculumList = curriculumCustomRepository.findAllByLectureId(lectureId);
+        List<Curriculum> curriculumList = curriculumJpaRepository.findAllByLectureId(lectureId);
         List<Long> curriculumIds = curriculumList.stream()
             .map(Curriculum::curriculumId)
             .toList();
@@ -116,7 +114,7 @@ public class LectureRepositoryImpl implements LectureRepository {
             .orElseThrow(EntityNotFoundException::new)
             .toModel();
 
-        List<Curriculum> curriculumList = curriculumCustomRepository.findAllByLectureId(lectureId);
+        List<Curriculum> curriculumList = curriculumJpaRepository.findAllByLectureId(lectureId);
         List<Long> lecturerIds = curriculumList.stream()
             .map(Curriculum::lecturerId)
             .toList();
