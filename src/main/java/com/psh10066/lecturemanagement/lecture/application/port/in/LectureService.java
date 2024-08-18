@@ -1,6 +1,5 @@
 package com.psh10066.lecturemanagement.lecture.application.port.in;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.RegisterLectureCommand;
@@ -24,6 +23,4 @@ public interface LectureService {
     void modifyLecture(User user, ModifyLectureCommand command);
 
     Lecture registerLecture(User user, RegisterLectureCommand command);
-
-    Lecture registerInflearnLecture(User user, RegisterInflearnLectureRequest request);
 }

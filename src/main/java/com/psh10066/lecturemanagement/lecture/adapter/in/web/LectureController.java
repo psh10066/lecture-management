@@ -118,7 +118,8 @@ public class LectureController {
         }
         Long lectureId;
         try {
-            lectureId = lectureService.registerInflearnLecture(user, request).lectureId();
+            RegisterLectureCommand command = registerLectureCommandFactory.fromInflearnUrl(request.lecturePath());
+            lectureId = lectureService.registerLecture(user, command).lectureId();
         } catch (Exception e) {
             log.error("강의 등록 실패", e);
             bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
