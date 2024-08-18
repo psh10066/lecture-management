@@ -6,6 +6,7 @@ import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectu
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.mapper.LectureRequestMapper;
+import com.psh10066.lecturemanagement.lecture.adapter.in.web.template.RegisterLectureViewTemplate;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
@@ -71,62 +72,45 @@ public class LectureController {
         return "redirect:/lecture/" + lectureId;
     }
 
-    private <T> ModelAndView registerForm(LecturePlatform lecturePlatform, T request) {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("request", request);
-        modelAndView.addObject("lecturePlatforms", LecturePlatform.values());
-        modelAndView.addObject("lecturePlatform", lecturePlatform);
-        modelAndView.setViewName("lecture/register");
-        return modelAndView;
-    }
-
     @GetMapping("/register/fastcampus")
     public ModelAndView registerFastcampus() {
-        return this.registerForm(LecturePlatform.FASTCAMPUS, RegisterFastcampusLectureRequest.noArgs());
+        return RegisterLectureViewTemplate.registerForm(LecturePlatform.FASTCAMPUS, RegisterFastcampusLectureRequest.noArgs());
     }
 
     @PostMapping("/register/fastcampus")
     public ModelAndView registerFastcampus(@AuthenticationPrincipal User user, @Validated @ModelAttribute("request") RegisterFastcampusLectureRequest request, BindingResult bindingResult) {
-        LecturePlatform lecturePlatform = LecturePlatform.FASTCAMPUS;
-
-        if (bindingResult.hasErrors()) {
-            return this.registerForm(lecturePlatform, request);
-        }
-        Long lectureId;
-        try {
-            RegisterLectureCommand command = registerLectureCommandFactory.fromFastcampusRequest(request);
-            lectureId = lectureService.registerLecture(user, command).lectureId();
-        } catch (Exception e) {
-            log.error("강의 등록 실패", e);
-            bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
-            return this.registerForm(lecturePlatform, request);
-        }
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/lecture/" + lectureId);
-        return modelAndView;
+        return new RegisterLectureViewTemplate(
+            LecturePlatform.FASTCAMPUS,
+            user,
+            request,
+            bindingResult,
+            lectureService
+        ) {
+            @Override
+            public RegisterLectureCommand command() {
+                return registerLectureCommandFactory.fromFastcampusRequest(request);
+            }
+        }.view();
     }
 
     @GetMapping("/register/inflearn")
     public ModelAndView registerInflearn() {
-        return this.registerForm(LecturePlatform.INFLEARN, RegisterInflearnLectureRequest.noArgs());
+        return RegisterLectureViewTemplate.registerForm(LecturePlatform.INFLEARN, RegisterInflearnLectureRequest.noArgs());
     }
 
     @PostMapping("/register/inflearn")
     public ModelAndView registerInflearn(@AuthenticationPrincipal User user, @Validated @ModelAttribute("request") RegisterInflearnLectureRequest request, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return this.registerForm(LecturePlatform.INFLEARN, request);
-        }
-        Long lectureId;
-        try {
-            RegisterLectureCommand command = registerLectureCommandFactory.fromInflearnUrl(request.lecturePath());
-            lectureId = lectureService.registerLecture(user, command).lectureId();
-        } catch (Exception e) {
-            log.error("강의 등록 실패", e);
-            bindingResult.reject("registerError", "강의 등록에 실패했습니다.");
-            return this.registerForm(LecturePlatform.INFLEARN, request);
-        }
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/lecture/" + lectureId);
-        return modelAndView;
+        return new RegisterLectureViewTemplate(
+            LecturePlatform.INFLEARN,
+            user,
+            request,
+            bindingResult,
+            lectureService
+        ) {
+            @Override
+            public RegisterLectureCommand command() {
+                return registerLectureCommandFactory.fromInflearnUrl(request.lecturePath());
+            }
+        }.view();
     }
 }
