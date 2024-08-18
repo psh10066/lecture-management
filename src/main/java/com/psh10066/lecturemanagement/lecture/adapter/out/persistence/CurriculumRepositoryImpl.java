@@ -1,8 +1,8 @@
 package com.psh10066.lecturemanagement.lecture.adapter.out.persistence;
 
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaEntity;
 import com.psh10066.lecturemanagement.lecture.adapter.out.persistence.curriculum.CurriculumJpaRepository;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.out.CurriculumRepository;
 import com.psh10066.lecturemanagement.lecture.application.port.out.LecturerRepository;
 import com.psh10066.lecturemanagement.lecture.domain.Curriculum;
@@ -31,11 +31,11 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
     }
 
     @Override
-    public void updateLecturer(List<ModifyLectureRequest.InnerDTO> command, User user) {
-        Map<Long, String> lecturerMap = command.stream()
+    public void updateLecturer(ModifyLectureCommand command, User user) {
+        Map<Long, String> lecturerMap = command.curriculumList().stream()
             .collect(Collectors.toMap(
-                ModifyLectureRequest.InnerDTO::getCurriculumId,
-                ModifyLectureRequest.InnerDTO::getLecturerName
+                ModifyLectureCommand.InnerDTO::curriculumId,
+                ModifyLectureCommand.InnerDTO::lecturerName
             ));
         Set<Long> curriculumIds = lecturerMap.keySet();
         List<Curriculum> curriculumJpaEntityList = curriculumJpaRepository.findAllById(curriculumIds).stream()

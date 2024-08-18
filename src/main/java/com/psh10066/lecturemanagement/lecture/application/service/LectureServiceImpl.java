@@ -1,11 +1,11 @@
 package com.psh10066.lecturemanagement.lecture.application.service;
 
 import com.psh10066.lecturemanagement.core.util.DateTimeUtil;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
-import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.application.port.out.*;
@@ -40,8 +40,8 @@ public class LectureServiceImpl implements LectureService {
         return lectureRepository.findAllByUser(user);
     }
 
-    public List<Lecture> lectureList(User user, LecturesRequest request) {
-        return lectureRepository.findAllLecture(user, request.lectureName(), request.lecturePlatform());
+    public List<Lecture> lectureList(User user, LecturesCommand command) {
+        return lectureRepository.findAllLecture(user, command.lectureName(), command.lecturePlatform());
     }
 
     @Transactional(readOnly = true)
@@ -55,8 +55,8 @@ public class LectureServiceImpl implements LectureService {
     }
 
     @Transactional
-    public void modifyLecture(User user, Long lectureId, ModifyLectureRequest request) {
-        curriculumRepository.updateLecturer(request.getCurriculumList(), user);
+    public void modifyLecture(User user, ModifyLectureCommand command) {
+        curriculumRepository.updateLecturer(command, user);
     }
 
     @Transactional

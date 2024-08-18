@@ -1,13 +1,16 @@
 package com.psh10066.lecturemanagement.lecture.adapter.in.web;
 
-import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
-import com.psh10066.lecturemanagement.lecture.domain.Lecture;
-import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.LecturesRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.ModifyLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterFastcampusLectureRequest;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.RegisterInflearnLectureRequest;
+import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.mapper.LectureRequestMapper;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.LecturesCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.ModifyLectureCommand;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureInfoDTO;
+import com.psh10066.lecturemanagement.lecture.application.port.in.dto.LectureModifyInfoDTO;
+import com.psh10066.lecturemanagement.lecture.domain.Lecture;
 import com.psh10066.lecturemanagement.lecture.domain.LecturePlatform;
 import com.psh10066.lecturemanagement.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +38,8 @@ public class LectureController {
         model.addAttribute("request", request);
         model.addAttribute("lecturePlatforms", LecturePlatform.values());
 
-        List<Lecture> lectureList = lectureService.lectureList(user, request);
+        LecturesCommand command = LectureRequestMapper.INSTANCE.toCommand(request);
+        List<Lecture> lectureList = lectureService.lectureList(user, command);
         model.addAttribute("lectures", lectureList);
         return "lecture/list";
     }
@@ -58,7 +62,9 @@ public class LectureController {
 
     @PostMapping("/{lectureId}/modify")
     public String lectureModify(@AuthenticationPrincipal User user, @PathVariable Long lectureId, @ModelAttribute("request") ModifyLectureRequest request) {
-        lectureService.modifyLecture(user, lectureId, request);
+
+        ModifyLectureCommand command = LectureRequestMapper.INSTANCE.toCommand(lectureId, request);
+        lectureService.modifyLecture(user, command);
         return "redirect:/lecture/" + lectureId;
     }
 

@@ -1,6 +1,8 @@
 package com.psh10066.lecturemanagement.lecture.adapter.in.web;
 
 import com.psh10066.lecturemanagement.jpaclient.paging.PagingMaker;
+import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.mapper.StudyRequestMapper;
+import com.psh10066.lecturemanagement.lecture.application.port.in.command.StudiesCommand;
 import com.psh10066.lecturemanagement.lecture.application.port.in.dto.StudyListDTO;
 import com.psh10066.lecturemanagement.lecture.adapter.in.web.request.StudiesRequest;
 import com.psh10066.lecturemanagement.lecture.application.port.in.LectureService;
@@ -31,7 +33,8 @@ public class StudyController {
         model.addAttribute("lecturePlatforms", LecturePlatform.values());
         model.addAttribute("lectures", lectureService.lectureList(user));
 
-        Page<StudyListDTO> studyList = studyService.studyList(user, pageable, request);
+        StudiesCommand command = StudyRequestMapper.INSTANCE.toCommand(request);
+        Page<StudyListDTO> studyList = studyService.studyList(user, pageable, command);
         model.addAttribute("paging", pagingMaker.getPaging(pageable, studyList));
         model.addAttribute("studies", studyList);
         return "study/list";
