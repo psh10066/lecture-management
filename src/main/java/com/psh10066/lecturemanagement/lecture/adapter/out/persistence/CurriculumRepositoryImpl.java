@@ -51,8 +51,10 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
 
         curriculumJpaEntityList.forEach(curriculum -> {
             String newLecturerName = lecturerMap.get(curriculum.curriculumId());
-            if (curriculum.lecturerId() == null || !lecturerRepository.getById(curriculum.lecturerId()).lecturerName().equals(newLecturerName)) {
-                Curriculum newCurriculum = curriculum.updateCurriculum(lecturerRepository.save(Lecturer.createLecturer(newLecturerName, user.getUserId())).lecturerId());
+
+            Lecturer lecturer = lecturerRepository.findOrRegister(newLecturerName, user);
+            if (!lecturer.lecturerId().equals(curriculum.lecturerId())) {
+                Curriculum newCurriculum = curriculum.updateCurriculum(lecturer.lecturerId());
                 curriculumJpaRepository.save(CurriculumJpaEntity.from(newCurriculum));
             }
         });
@@ -60,12 +62,9 @@ public class CurriculumRepositoryImpl implements CurriculumRepository {
 
     @Override
     public Curriculum register(User user, Long lectureId, RegisterLectureCommand.CurriculumDTO curriculumDTO) {
-        Long lecturerId = null;
-        if (StringUtils.isNotBlank(curriculumDTO.lecturerName())) {
-            lecturerId = lecturerRepository.findByLecturerNameAndUser(curriculumDTO.lecturerName(), user)
-                .orElseGet(() -> lecturerRepository.save(Lecturer.createLecturer(curriculumDTO.lecturerName(), user.getUserId())))
-                .lecturerId();
-        }
+        Long lecturerId = StringUtils.isNotBlank(curriculumDTO.lecturerName())
+            ? lecturerRepository.findOrRegister(curriculumDTO.lecturerName(), user).lecturerId()
+            : null;
 
         final Curriculum curriculum = curriculumJpaRepository.save(CurriculumJpaEntity.from(
             Curriculum.createCurriculum(curriculumDTO.curriculumName(), lecturerId))
